@@ -99,7 +99,7 @@ function buildSocialBar() {
 
   const disclaimer = document.createElement("div");
   disclaimer.className = "social-state disclaimer";
-  disclaimer.textContent = "For educational purposes only. Not financial, investment, or trading advice. Do your own research before investing.";
+  disclaimer.textContent = "For educational purposes only. This is not financial, investment, or trading advice. Please do your own research before making any investment decisions.";
 
   socialBar.append(handles, disclaimer);
 
