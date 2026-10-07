@@ -99,7 +99,7 @@ function buildSocialBar() {
 
   const disclaimer = document.createElement("div");
   disclaimer.className = "social-state disclaimer";
-  disclaimer.innerHTML = `<span class="disclaimer-label">DISCLAIMER</span> This content is for educational and informational purposes only and should not be construed as financial, investment, or trading advice. Please do your own research and consult a qualified financial professional before making investment decisions.`;
+  disclaimer.innerHTML = `<span class="disclaimer-label">DISCLAIMER</span> Educational and informational content only — not financial, investment, or trading advice. Do your own research and consult a qualified financial professional before investing.`;
 
   socialBar.append(handles, disclaimer);
 
@@ -107,15 +107,15 @@ function buildSocialBar() {
   const setState = () => {
     showDisclaimer = !showDisclaimer;
     handles.style.opacity = showDisclaimer ? "0" : "1";
-    handles.style.transform = showDisclaimer ? "translate(-50%, calc(-50% + 4px))" : "translate(-50%, -50%)";
+    handles.style.transform = showDisclaimer ? "translateY(4px)" : "translateY(0)";
     disclaimer.style.opacity = showDisclaimer ? "1" : "0";
-    disclaimer.style.transform = showDisclaimer ? "translate(-50%, -50%)" : "translate(-50%, calc(-50% - 4px))";
+    disclaimer.style.transform = showDisclaimer ? "translateY(0)" : "translateY(-4px)";
   };
 
   handles.style.opacity = "1";
-  handles.style.transform = "translate(-50%, -50%)";
+  handles.style.transform = "translateY(0)";
   disclaimer.style.opacity = "0";
-  disclaimer.style.transform = "translate(-50%, calc(-50% - 4px))";
+  disclaimer.style.transform = "translateY(-4px)";
 
   setTimeout(() => setInterval(setState, 4000), 2500);
 }
