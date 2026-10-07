@@ -59,7 +59,7 @@ function buildMarketItem(key) {
   return wrapper;
 }
 
-function appendSeparator() {
+function appendMarketSeparator() {
   const separator = document.createElement("span");
   separator.className = "separator";
   separator.setAttribute("aria-hidden", "true");
@@ -67,22 +67,9 @@ function appendSeparator() {
 }
 
 function appendCycle() {
-  // Interleave market information and social identity so the feed feels editorial,
-  // rather than separating the two into obvious blocks.
-  const cycle = [
-    marketOrder[0], socials[0],
-    marketOrder[1], socials[1],
-    marketOrder[2], socials[2],
-    socials[3]
-  ];
-
-  cycle.forEach((entry) => {
-    track.appendChild(
-      typeof entry === "string"
-        ? buildMarketItem(entry)
-        : buildSocialItem(entry)
-    );
-    appendSeparator();
+  marketOrder.forEach((entry) => {
+    track.appendChild(buildMarketItem(entry));
+    appendMarketSeparator();
   });
 }
 
@@ -90,6 +77,22 @@ function buildTicker() {
   track.innerHTML = "";
   appendCycle();
   appendCycle();
+}
+
+const socialBar = document.getElementById("socialBar");
+
+function buildSocialBar() {
+  socialBar.innerHTML = "";
+  socials.forEach((social, index) => {
+    socialBar.appendChild(buildSocialItem(social));
+
+    if (index < socials.length - 1) {
+      const separator = document.createElement("span");
+      separator.className = "social-separator";
+      separator.setAttribute("aria-hidden", "true");
+      socialBar.appendChild(separator);
+    }
+  });
 }
 
 async function fetchMarketData() {
