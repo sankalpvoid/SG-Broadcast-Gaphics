@@ -146,10 +146,13 @@ body { font-family: Inter, system-ui, sans-serif; }
 
 .social-state {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  max-width: calc(100% - 28px);
-  width: max-content;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
   transition: opacity .45s ease, transform .45s ease;
   pointer-events: none;
 }
