@@ -6,7 +6,7 @@
   --ink: #070809;
   --paper: #f3f5f4;
   --muted: rgba(243,245,244,.66);
-  --height: 56px;
+  --height: 64px;
 }
 
 * { box-sizing: border-box; }
