@@ -144,6 +144,22 @@ body { font-family: Inter, system-ui, sans-serif; }
   color: var(--muted);
 }
 
+.social-state {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  max-width: calc(100% - 28px);
+  width: max-content;
+  transition: opacity .45s ease, transform .45s ease;
+  pointer-events: none;
+}
+
+.social-state--handles {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .social-item {
   display: inline-flex;
   align-items: center;
