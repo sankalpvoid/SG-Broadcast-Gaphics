@@ -5,6 +5,19 @@ const socials = [
   { platform: "whatsapp", handle: "@whatsapp_channel", icon: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a9.5 9.5 0 0 0-8.2 14.3L2.5 21.5l4.9-1.3A9.5 9.5 0 1 0 12 2.5Zm0 17a7.5 7.5 0 0 1-3.8-1l-.3-.2-2.9.8.8-2.8-.2-.3A7.5 7.5 0 1 1 12 19.5Zm4.1-5.6c-.2-.1-1.2-.6-1.4-.7-.2-.1-.3-.1-.5.1-.1.2-.5.7-.6.8-.1.2-.3.2-.5.1-1.5-.7-2.5-1.3-3.5-2.9-.3-.5.3-.4.8-1.3.1-.2.1-.3 0-.5l-.6-1.4c-.2-.4-.3-.4-.5-.4h-.4c-.2 0-.5.1-.7.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.3c.1.2 1.5 2.3 3.6 3.2 1.4.6 1.9.7 2.6.6.4-.1 1.2-.5 1.4-1 .2-.5.2-.9.1-1Z" fill="currentColor"/></svg>` }
 ];
 
+function buildSocialItem(social) {
+  const item = document.createElement("span");
+  item.className = "item social-item";
+  const icon = document.createElement("span");
+  icon.className = `social-icon social-icon--${social.platform}`;
+  icon.innerHTML = social.icon;
+  icon.setAttribute("aria-hidden", "true");
+  const handle = document.createElement("span");
+  handle.textContent = social.handle;
+  item.append(icon, handle);
+  return item;
+}
+
 const marketOrder = ["nifty", "sensex", "banknifty", "finnifty"];
 let marketData = {};
 const track = document.getElementById("tickerTrack");
@@ -39,10 +52,12 @@ function buildMarketItem(key) {
 
 function buildTicker() {
   track.innerHTML = "";
-  const items = marketOrder.flatMap(key => [key, key]);
+  const marketItems = marketOrder.flatMap(key => [key, key]);
+  const socialItems = socials.flatMap(social => [social, social]);
+  const items = [...marketItems, ...socialItems];
 
-  items.forEach((key, index) => {
-    track.appendChild(buildMarketItem(key));
+  items.forEach((entry, index) => {
+    track.appendChild(typeof entry === "string" ? buildMarketItem(entry) : buildSocialItem(entry));
     if (index < items.length - 1) {
       const separator = document.createElement("span");
       separator.className = "separator";
