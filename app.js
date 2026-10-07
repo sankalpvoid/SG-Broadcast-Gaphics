@@ -53,12 +53,13 @@ function buildMarketItem(key) {
 function buildTicker() {
   track.innerHTML = "";
 
-  // One complete cycle: social handles -> market indices -> social handles.
-  const items = [
+  // Render one visible cycle. Duplicate only the full cycle for seamless looping.
+  const cycle = [
     ...socials,
-    ...marketOrder,
-    ...socials
+    ...marketOrder
   ];
+
+  const items = [...cycle, ...cycle];
 
   items.forEach((entry, index) => {
     track.appendChild(
@@ -74,12 +75,6 @@ function buildTicker() {
       track.appendChild(separator);
     }
   });
-
-  if (!Object.keys(marketData).length) {
-    track.querySelectorAll(".market-price").forEach(el => {
-      el.textContent = "LOADING";
-    });
-  }
 }
 
 
