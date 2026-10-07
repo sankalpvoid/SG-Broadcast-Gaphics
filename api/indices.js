@@ -2,8 +2,7 @@ export default async function handler(req, res) {
   const symbols = {
     nifty: "^NSEI",
     sensex: "^BSESN",
-    banknifty: "^NSEBANK",
-    finnifty: "^CNXFINANCE"
+    banknifty: "^NSEBANK"
   };
 
   const results = await Promise.all(Object.entries(symbols).map(async ([key, symbol]) => {
@@ -18,7 +17,7 @@ export default async function handler(req, res) {
       if (!Number.isFinite(price) || !Number.isFinite(previousClose)) throw new Error("Missing price data");
       const change = price - previousClose;
       return [key, {
-        name: key === "banknifty" ? "BANKNIFTY" : key === "finnifty" ? "FINNIFTY" : key.toUpperCase(),
+        name: key === "banknifty" ? "BANKNIFTY" : key.toUpperCase(),
         price,
         change,
         percent: (change / previousClose) * 100,
