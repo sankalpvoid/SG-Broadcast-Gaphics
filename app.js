@@ -1,7 +1,7 @@
 const socials = [
   { platform: "instagram", handle: "@instagram_handle", icon: `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>` },
   { platform: "telegram", handle: "@telegram_handle", icon: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.4 3.6 3.7 10.4c-1.2.5-1.2 1.2-.2 1.5l4.5 1.4 1.7 5.3c.2.6.1.8.7.8.5 0 .7-.2.9-.4l2.2-2.1 4.6 3.4c.9.5 1.5.3 1.7-.8l3-14.1c.3-1.4-.5-2-1.4-1.6Zm-12.7 9.4 9.8-6.2c.5-.3.9-.1.5.2l-8 7.2-.3 3.1-1.2-3.8-3-.9c-.7-.2-.7-.5.2-.8Z" fill="currentColor"/></svg>` },
-  { platform: "youtube", handle: "@youtube_handle", icon: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 12s0-3.5-.4-5.1c-.2-1.8-1.4-3.1-3.1-3.3C17.8 3.2 12 3.2 12 3.2s-5.8 0-7.5.4C2.8 3.8 1.6 5.1 1.4 6.9 1 8.5 1 12 1 12s0 3.5.4 5.1c.2 1.8 1.4 3.1 3.1 3.3 1.7.4 7.5.4 7.5.4s5.8 0 7.5-.4c1.7-.2 2.9-1.5 3.1-3.3.4-1.6.4-5.1.4-5.1Z" fill="currentColor"/><path d="m10 8.5 5 3.5-5 3.5v-7Z" fill="var(--icon-cutout, #070809)"/></svg>` },
+  { platform: "youtube", handle: "@youtube_handle", icon: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 12s0-3.5-.4-5.1c-.2-1.8-1.4-3.1-3.1-3.3C17.8 3.2 12 3.2 12 3.2s-5.8 0-7.5.4C2.8 3.8 1.6 5.1 1.4 6.9 1 8.5 1 12 1 12s0 3.5.4 5.1c.2 1.8 1.4 3.1 3.1 3.3 1.7.4 7.5.4 7.5.4s5.8 0 7.5-.4c1.7-.2 2.9-1.5 3.1-3.3.4-1.6.4-5.1.4-5.1Z" fill="currentColor"/><path d="m10 8.5 5 3.5-5 3.5v-7Z" fill="var(--bg)"/></svg>` },
   { platform: "whatsapp", handle: "@whatsapp_channel", icon: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a9.5 9.5 0 0 0-8.2 14.3L2.5 21.5l4.9-1.3A9.5 9.5 0 1 0 12 2.5Zm0 17a7.5 7.5 0 0 1-3.8-1l-.3-.2-2.9.8.8-2.8-.2-.3A7.5 7.5 0 1 1 12 19.5Zm4.1-5.6c-.2-.1-1.2-.6-1.4-.7-.2-.1-.3-.1-.5.1-.1.2-.5.7-.6.8-.1.2-.3.2-.5.1-1.5-.7-2.5-1.3-3.5-2.9-.3-.5.3-.4.8-1.3.1-.2.1-.3 0-.5l-.6-1.4c-.2-.4-.3-.4-.5-.4h-.4c-.2 0-.5.1-.7.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.3c.1.2 1.5 2.3 3.6 3.2 1.4.6 1.9.7 2.6.6.4-.1 1.2-.5 1.4-1 .2-.5.2-.9.1-1Z" fill="currentColor"/></svg>` }
 ];
 
@@ -59,8 +59,22 @@ function buildMarketItem(key) {
   return wrapper;
 }
 
+function appendSeparator() {
+  const separator = document.createElement("span");
+  separator.className = "separator";
+  separator.setAttribute("aria-hidden", "true");
+  track.appendChild(separator);
+}
+
 function appendCycle() {
-  const cycle = [...socials, ...marketOrder];
+  // Interleave market information and social identity so the feed feels editorial,
+  // rather than separating the two into obvious blocks.
+  const cycle = [
+    marketOrder[0], socials[0],
+    marketOrder[1], socials[1],
+    marketOrder[2], socials[2],
+    socials[3]
+  ];
 
   cycle.forEach((entry) => {
     track.appendChild(
@@ -68,11 +82,7 @@ function appendCycle() {
         ? buildMarketItem(entry)
         : buildSocialItem(entry)
     );
-
-    const separator = document.createElement("span");
-    separator.className = "separator";
-    separator.setAttribute("aria-hidden", "true");
-    track.appendChild(separator);
+    appendSeparator();
   });
 }
 
@@ -98,7 +108,7 @@ async function fetchMarketData() {
 
 let position = 0;
 let last = performance.now();
-const speed = 72;
+const speed = 52;
 
 function animate(now) {
   const delta = Math.min(now - last, 50);
@@ -116,10 +126,11 @@ function animate(now) {
 
 function updateClock() {
   clock.textContent = new Intl.DateTimeFormat("en-IN", {
+    timeZone: "Asia/Kolkata",
     hour: "2-digit",
     minute: "2-digit",
     hour12: false
-  }).format(new Date());
+  }).format(new Date()) + " IST";
 }
 
 buildTicker();
