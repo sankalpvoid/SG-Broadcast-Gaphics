@@ -28,7 +28,7 @@ body { font-family: Inter, system-ui, sans-serif; }
   width: 100%;
   height: var(--height);
   display: grid;
-  grid-template-columns: 332px minmax(0,1fr) 90px 118px;
+  grid-template-columns: 290px minmax(0,1fr) 76px 92px;
   align-items: stretch;
   overflow: hidden;
   border-top: 1px solid var(--line-soft);
@@ -41,8 +41,8 @@ body { font-family: Inter, system-ui, sans-serif; }
   position: relative;
   display: flex;
   align-items: center;
-  gap: 13px;
-  padding: 0 25px 0 18px;
+  gap: 11px;
+  padding: 0 18px 0 14px;
   background: var(--bg-deep);
   border-right: 1px solid var(--line);
   grid-row: 1;
@@ -62,18 +62,18 @@ body { font-family: Inter, system-ui, sans-serif; }
 .brand-mark {
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
-  flex: 0 0 34px;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
   border: 1px solid var(--gold);
   color: var(--gold);
-  font: 800 12px/1 Inter, sans-serif;
+  font: 800 11px/1 Inter, sans-serif;
   letter-spacing: .8px;
 }
 
 .brand-copy { min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 4px; }
-.brand-name { color: var(--paper); font: 800 18px/1 'Barlow Condensed', sans-serif; letter-spacing: 1.25px; white-space: nowrap; }
-.brand-subtitle { color: var(--muted-dim); font: 600 8.5px/1 Inter, sans-serif; letter-spacing: 1.15px; white-space: nowrap; }
+.brand-name { color: var(--paper); font: 800 17px/1 'Barlow Condensed', sans-serif; letter-spacing: 1.15px; white-space: nowrap; }
+.brand-subtitle { color: var(--muted-dim); font: 600 8px/1 Inter, sans-serif; letter-spacing: 1.05px; white-space: nowrap; }
 
 .ticker-body {
   min-width: 0;
@@ -137,7 +137,8 @@ body { font-family: Inter, system-ui, sans-serif; }
   min-width: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  padding: 0 14px;
   gap: 0;
   overflow: hidden;
   color: var(--muted);
@@ -146,32 +147,45 @@ body { font-family: Inter, system-ui, sans-serif; }
 .social-item {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  color: var(--muted);
-  font: 600 11px/1 Inter, sans-serif;
-  letter-spacing: .15px;
+  gap: 8px;
+  color: var(--paper);
+  font: 700 12.5px/1 Inter, sans-serif;
+  letter-spacing: .12px;
   white-space: nowrap;
+  flex: 0 0 auto;
 }
 
-.social-icon { display: inline-grid; place-items: center; width: 17px; height: 17px; color: var(--muted); }
-.social-icon svg { width: 15px; height: 15px; display: block; }
+.social-icon { display: inline-grid; place-items: center; width: 19px; height: 19px; color: var(--muted); flex: 0 0 19px; }
+.social-icon svg { width: 17px; height: 17px; display: block; }
 
 .social-separator {
   width: 1px;
-  height: 13px;
-  margin: 0 17px;
+  height: 15px;
+  margin: 0 15px;
   background: var(--line);
+  flex: 0 0 1px;
+}
+
+.disclaimer {
+  margin-left: auto;
+  padding-left: 14px;
+  color: var(--muted-dim);
+  font: 600 8.5px/1 Inter, sans-serif;
+  letter-spacing: .15px;
+  white-space: nowrap;
+  text-align: right;
+  flex: 0 0 auto;
 }
 
 .live {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   color: var(--paper);
   background: var(--live);
-  font: 800 13px/1 Inter, sans-serif;
-  letter-spacing: 1.25px;
+  font: 800 12px/1 Inter, sans-serif;
+  letter-spacing: 1.1px;
 }
 
 .live-dot {
@@ -188,45 +202,55 @@ body { font-family: Inter, system-ui, sans-serif; }
   border-left: 1px solid var(--line);
   background: #1a222c;
   color: var(--paper);
-  font: 700 15px/1 'Barlow Condensed', sans-serif;
-  letter-spacing: 1.15px;
+  font: 700 14px/1 'Barlow Condensed', sans-serif;
+  letter-spacing: 1px;
   font-variant-numeric: tabular-nums;
 }
 
 @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.42; } }
 
 @media (max-width: 1200px) {
-  .ticker { grid-template-columns: 290px minmax(0,1fr) 84px 105px; }
+  .ticker { grid-template-columns: 270px minmax(0,1fr) 72px 88px; }
   .brand-name { font-size: 16px; }
   .brand-subtitle { font-size: 7.5px; }
   .ticker-track { font-size: 16px; }
+  .social-item { font-size: 12px; }
+  .disclaimer { font-size: 8px; }
 }
 
 @media (max-width: 900px) {
   :root { --height: 72px; --market-height: 43px; --social-height: 28px; }
-  .ticker { grid-template-columns: 240px minmax(0,1fr) 78px 92px; }
-  .brand { gap: 10px; padding-left: 12px; padding-right: 17px; }
-  .brand-mark { width: 30px; height: 30px; flex-basis: 30px; font-size: 10px; }
+  .ticker { grid-template-columns: 230px minmax(0,1fr) 68px 82px; }
+  .brand { gap: 9px; padding-left: 11px; padding-right: 13px; }
+  .brand-mark { width: 29px; height: 29px; flex-basis: 29px; font-size: 10px; }
   .brand-name { font-size: 14px; }
-  .brand-subtitle { font-size: 6.5px; letter-spacing: .8px; }
+  .brand-subtitle { font-size: 6.25px; letter-spacing: .75px; }
   .ticker-track { font-size: 15px; }
   .market-name { font-size: 11px; }
   .market-price { font-size: 16px; }
   .market-change { font-size: 10px; }
-  .social-item { font-size: 10px; }
-  .social-separator { margin: 0 10px; }
-  .clock { font-size: 13px; }
+  .social-bar { padding: 0 9px; }
+  .social-item { font-size: 10.5px; gap: 6px; }
+  .social-icon { width: 17px; height: 17px; flex-basis: 17px; }
+  .social-icon svg { width: 15px; height: 15px; }
+  .social-separator { margin: 0 8px; height: 13px; }
+  .disclaimer { padding-left: 9px; font-size: 7px; }
+  .clock { font-size: 12px; }
 }
 
 @media (max-width: 620px) {
   :root { --height: 68px; --market-height: 40px; --social-height: 27px; }
-  .ticker { grid-template-columns: 196px minmax(0,1fr) 68px 82px; }
-  .brand { gap: 8px; padding-left: 10px; padding-right: 13px; }
-  .brand-mark { width: 27px; height: 27px; flex-basis: 27px; font-size: 9px; }
-  .brand-name { font-size: 12px; letter-spacing: .9px; }
-  .brand-subtitle { font-size: 5.5px; }
-  .live { font-size: 11px; gap: 5px; }
-  .clock { font-size: 11px; letter-spacing: .8px; }
-  .social-item { font-size: 9px; }
-  .social-separator { margin: 0 7px; }
+  .ticker { grid-template-columns: 190px minmax(0,1fr) 62px 76px; }
+  .brand { gap: 7px; padding-left: 9px; padding-right: 10px; }
+  .brand-mark { width: 26px; height: 26px; flex-basis: 26px; font-size: 9px; }
+  .brand-name { font-size: 11.5px; letter-spacing: .8px; }
+  .brand-subtitle { font-size: 5.25px; }
+  .live { font-size: 10px; gap: 4px; }
+  .clock { font-size: 10px; letter-spacing: .7px; }
+  .social-bar { padding: 0 7px; }
+  .social-item { font-size: 9px; gap: 5px; }
+  .social-icon { width: 15px; height: 15px; flex-basis: 15px; }
+  .social-icon svg { width: 13px; height: 13px; }
+  .social-separator { margin: 0 6px; }
+  .disclaimer { display: none; }
 }
