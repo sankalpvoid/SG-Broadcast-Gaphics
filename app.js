@@ -5,35 +5,68 @@ const socials = [
   { platform: "whatsapp", handle: "@whatsapp_channel", icon: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a9.5 9.5 0 0 0-8.2 14.3L2.5 21.5l4.9-1.3A9.5 9.5 0 1 0 12 2.5Zm0 17a7.5 7.5 0 0 1-3.8-1l-.3-.2-2.9.8.8-2.8-.2-.3A7.5 7.5 0 1 1 12 19.5Zm4.1-5.6c-.2-.1-1.2-.6-1.4-.7-.2-.1-.3-.1-.5.1-.1.2-.5.7-.6.8-.1.2-.3.2-.5.1-1.5-.7-2.5-1.3-3.5-2.9-.3-.5.3-.4.8-1.3.1-.2.1-.3 0-.5l-.6-1.4c-.2-.4-.3-.4-.5-.4h-.4c-.2 0-.5.1-.7.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.3c.1.2 1.5 2.3 3.6 3.2 1.4.6 1.9.7 2.6.6.4-.1 1.2-.5 1.4-1 .2-.5.2-.9.1-1Z" fill="currentColor"/></svg>` }
 ];
 
+const marketOrder = ["nifty", "sensex", "banknifty", "finnifty"];
+let marketData = {};
 const track = document.getElementById("tickerTrack");
 const clock = document.getElementById("clock");
 
+function formatPrice(value) {
+  return Number(value).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function buildMarketItem(key) {
+  const item = marketData[key];
+  const wrapper = document.createElement("span");
+  wrapper.className = "item market-item";
+
+  const name = document.createElement("span");
+  name.className = "market-name";
+  name.textContent = item?.name || key.toUpperCase();
+
+  const price = document.createElement("span");
+  price.className = "market-price";
+  price.textContent = item?.price != null ? formatPrice(item.price) : "—";
+
+  const change = document.createElement("span");
+  const percent = Number(item?.percent);
+  const valid = Number.isFinite(percent);
+  change.className = `market-change ${valid ? percent > 0 ? "market-change--up" : percent < 0 ? "market-change--down" : "market-change--flat" : "market-change--flat"}`;
+  change.textContent = valid ? `${percent >= 0 ? "▲" : "▼"} ${Math.abs(percent).toFixed(2)}%` : "—";
+
+  wrapper.append(name, price, change);
+  return wrapper;
+}
+
 function buildTicker() {
   track.innerHTML = "";
-  const content = [...socials, ...socials];
+  const items = marketOrder.flatMap(key => [key, key]);
 
-  content.forEach((social, index) => {
-    const item = document.createElement("span");
-    item.className = "item social-item";
-
-    const icon = document.createElement("span");
-    icon.className = `social-icon social-icon--${social.platform}`;
-    icon.innerHTML = social.icon;
-    icon.setAttribute("aria-hidden", "true");
-
-    const handle = document.createElement("span");
-    handle.textContent = social.handle;
-
-    item.append(icon, handle);
-    track.appendChild(item);
-
-    if (index < content.length - 1) {
+  items.forEach((key, index) => {
+    track.appendChild(buildMarketItem(key));
+    if (index < items.length - 1) {
       const separator = document.createElement("span");
       separator.className = "separator";
       separator.setAttribute("aria-hidden", "true");
       track.appendChild(separator);
     }
   });
+
+  if (!Object.keys(marketData).length) {
+    track.querySelectorAll(".market-price").forEach(el => el.textContent = "LOADING");
+  }
+}
+
+async function fetchMarketData() {
+  try {
+    const response = await fetch("/api/indices", { cache: "no-store" });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const payload = await response.json();
+    marketData = payload.data || {};
+    buildTicker();
+  } catch (error) {
+    console.warn("Market data unavailable:", error);
+    if (!Object.keys(marketData).length) buildTicker();
+  }
 }
 
 let position = 0;
@@ -61,6 +94,8 @@ function updateClock() {
 }
 
 buildTicker();
+fetchMarketData();
+setInterval(fetchMarketData, 30000);
 updateClock();
 setInterval(updateClock, 1000);
 requestAnimationFrame(animate);
