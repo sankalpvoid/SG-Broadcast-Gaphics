@@ -135,11 +135,11 @@ body { font-family: Inter, system-ui, sans-serif; }
 
 .social-bar {
   min-width: 0;
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   padding: 0 14px;
-  gap: 0;
   overflow: hidden;
   color: var(--muted);
 }
@@ -167,14 +167,19 @@ body { font-family: Inter, system-ui, sans-serif; }
 }
 
 .disclaimer {
-  margin-left: auto;
-  padding-left: 14px;
-  color: var(--muted-dim);
-  font: 600 8.5px/1 Inter, sans-serif;
-  letter-spacing: .15px;
+  color: var(--paper);
+  font: 700 11px/1 Inter, sans-serif;
+  letter-spacing: .25px;
+  text-align: center;
   white-space: nowrap;
-  text-align: right;
   flex: 0 0 auto;
+}
+
+.disclaimer-label {
+  color: var(--gold);
+  font-weight: 800;
+  letter-spacing: .75px;
+  margin-right: 8px;
 }
 
 .live {
@@ -215,7 +220,7 @@ body { font-family: Inter, system-ui, sans-serif; }
   .brand-subtitle { font-size: 7.5px; }
   .ticker-track { font-size: 16px; }
   .social-item { font-size: 12px; }
-  .disclaimer { font-size: 8px; }
+  .disclaimer { font-size: 10px; }
 }
 
 @media (max-width: 900px) {
@@ -234,7 +239,8 @@ body { font-family: Inter, system-ui, sans-serif; }
   .social-icon { width: 17px; height: 17px; flex-basis: 17px; }
   .social-icon svg { width: 15px; height: 15px; }
   .social-separator { margin: 0 8px; height: 13px; }
-  .disclaimer { padding-left: 9px; font-size: 7px; }
+  .disclaimer { font-size: 8.5px; }
+  .disclaimer-label { margin-right: 5px; }
   .clock { font-size: 12px; }
 }
 
@@ -252,5 +258,6 @@ body { font-family: Inter, system-ui, sans-serif; }
   .social-icon { width: 15px; height: 15px; flex-basis: 15px; }
   .social-icon svg { width: 13px; height: 13px; }
   .social-separator { margin: 0 6px; }
-  .disclaimer { display: none; }
+  .disclaimer { font-size: 7.5px; }
+  .disclaimer-label { margin-right: 4px; }
 }
