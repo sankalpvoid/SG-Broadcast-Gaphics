@@ -137,6 +137,7 @@ function updateClock() {
 }
 
 buildTicker();
+buildSocialBar();
 updateClock();
 setInterval(updateClock, 1000);
 requestAnimationFrame(animate);
