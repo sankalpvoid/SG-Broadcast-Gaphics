@@ -20,7 +20,7 @@ body { font-family: Inter, system-ui, sans-serif; }
 
 .ticker {
   width: 100%; height: var(--height); display: grid;
-  grid-template-columns: 278px minmax(0,1fr) 104px 92px;
+  grid-template-columns: 235px minmax(0,1fr) 104px 92px;
   align-items: stretch; overflow: hidden; border: 1px solid rgba(255,255,255,.1);
   border-radius: 10px;
   background: linear-gradient(90deg, #070809 0%, #0a0d0b 72%, #0e1210 100%);
@@ -92,7 +92,7 @@ body { font-family: Inter, system-ui, sans-serif; }
 
 @media (max-width: 900px) {
   .stage { padding: 0 14px 14px; }
-  .ticker { grid-template-columns: 210px minmax(0,1fr) 88px 76px; height: 68px; }
+  .ticker { grid-template-columns: 190px minmax(0,1fr) 88px 76px; height: 68px; }
   .brand-logo { width: 42px; height: 42px; flex-basis: 42px; font-size: 9px; }
   .brand-name { font-size: 14px; }
   .ticker-track { font-size: 21px; }
