@@ -121,3 +121,11 @@ body { font-family: Inter, system-ui, sans-serif; }
   .ticker-track { font-size: 21px; }
   .clock { font-size: 15px; }
 }
+.market-item { gap: 7px; }
+.market-name { color: rgba(243,245,244,.62); font: 800 15px/1 Inter, sans-serif; letter-spacing: .6px; }
+.market-price { color: var(--paper); font-variant-numeric: tabular-nums; }
+.market-change { font: 800 15px/1 Inter, sans-serif; font-variant-numeric: tabular-nums; }
+.market-change--up { color: var(--up); }
+.market-change--down { color: var(--down); }
+.market-change--flat { color: var(--muted); }
+.market-status { color: var(--muted); font: 600 11px/1 Inter, sans-serif; letter-spacing: .5px; margin-left: 8px; }
