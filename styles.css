@@ -74,6 +74,23 @@ body { font-family: Inter, system-ui, sans-serif; }
 
 .item { display: inline-flex; align-items: center; }
 
+.social-item { gap: 10px; }
+
+.social-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  color: #070809;
+  background: var(--up);
+  font: 800 15px/1 Inter, sans-serif;
+}
+
+.social-icon--youtube { background: var(--down); color: white; }
+.social-icon--telegram { background: var(--paper); }
+.social-icon--whatsapp { background: var(--up); }
+
 .separator {
   display: inline-block; margin: 0 26px; width: 7px; height: 7px;
   transform: rotate(45deg); background: var(--up);
