@@ -87,6 +87,12 @@ body { font-family: Inter, system-ui, sans-serif; }
   font: 800 15px/1 Inter, sans-serif;
 }
 
+.social-icon svg { width: 18px; height: 18px; display: block; }
+.social-icon--instagram { background: #f3f5f4; color: #070809; }
+.social-icon--telegram { background: #f3f5f4; color: #070809; }
+.social-icon--youtube { background: #ff3b4e; color: #fff; }
+.social-icon--whatsapp { background: #19d66b; color: #070809; }
+
 .social-icon--youtube { background: var(--down); color: white; }
 .social-icon--telegram { background: var(--paper); }
 .social-icon--whatsapp { background: var(--up); }
