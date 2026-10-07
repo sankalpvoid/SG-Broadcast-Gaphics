@@ -1,147 +1,86 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@500;600;700;800&display=swap');
 
 :root {
-  --accent: #7c3cff;
-  --accent-bright: #9b6bff;
-  --ink: #09090c;
-  --paper: #f5f3f8;
-  --muted: rgba(245,243,248,.68);
+  --up: #19d66b;
+  --down: #ff3b4e;
+  --ink: #070809;
+  --paper: #f3f5f4;
+  --muted: rgba(243,245,244,.66);
   --height: 82px;
 }
 
 * { box-sizing: border-box; }
-
-html, body {
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  background: transparent;
-  overflow: hidden;
-}
-
-body {
-  font-family: Inter, system-ui, sans-serif;
-}
+html, body { margin: 0; width: 100%; height: 100%; background: transparent; overflow: hidden; }
+body { font-family: Inter, system-ui, sans-serif; }
 
 .stage {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: flex-end;
-  padding: 0 28px 28px;
-  pointer-events: none;
+  position: fixed; inset: 0; display: flex; align-items: flex-end;
+  padding: 0 28px 28px; pointer-events: none;
 }
 
 .ticker {
-  width: 100%;
-  height: var(--height);
-  display: grid;
+  width: 100%; height: var(--height); display: grid;
   grid-template-columns: 278px 104px minmax(0,1fr) 92px;
-  align-items: stretch;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,.12);
+  align-items: stretch; overflow: hidden; border: 1px solid rgba(255,255,255,.1);
   border-radius: 10px;
-  background: linear-gradient(90deg, #09090c 0%, #0c0b11 72%, #121017 100%);
+  background: linear-gradient(90deg, #070809 0%, #0a0d0b 72%, #0e1210 100%);
   box-shadow: 0 16px 50px rgba(0,0,0,.36);
 }
 
 .brand {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 0 20px 0 14px;
-  background: var(--paper);
-  color: var(--ink);
+  position: relative; display: flex; align-items: center; gap: 14px;
+  padding: 0 20px 0 14px; background: var(--paper); color: var(--ink);
   clip-path: polygon(0 0, 100% 0, calc(100% - 22px) 100%, 0 100%);
 }
 
 .brand-mark {
-  display: grid;
-  place-items: center;
-  width: 52px;
-  height: 52px;
-  flex: 0 0 52px;
-  border-radius: 7px;
-  background: var(--accent);
-  color: white;
-  font: 800 19px/1 Inter, sans-serif;
-  letter-spacing: -1px;
+  display: grid; place-items: center; width: 52px; height: 52px; flex: 0 0 52px;
+  border-radius: 7px; background: var(--up); color: #06110a;
+  font: 800 19px/1 Inter, sans-serif; letter-spacing: -1px;
 }
 
 .brand-name {
   font: 800 18px/1 'Barlow Condensed', sans-serif;
-  letter-spacing: .8px;
-  white-space: nowrap;
+  letter-spacing: .8px; white-space: nowrap;
 }
 
 .live {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  color: white;
-  background: var(--accent);
-  font: 800 15px/1 Inter, sans-serif;
-  letter-spacing: 1.4px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  color: white; background: var(--down);
+  font: 800 15px/1 Inter, sans-serif; letter-spacing: 1.4px;
 }
 
 .live-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: white;
+  width: 8px; height: 8px; border-radius: 50%; background: white;
   box-shadow: 0 0 0 4px rgba(255,255,255,.13);
   animation: pulse 1.4s ease-in-out infinite;
 }
 
 .ticker-window {
-  min-width: 0;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  position: relative;
+  min-width: 0; overflow: hidden; display: flex; align-items: center; position: relative;
 }
 
 .ticker-window::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(90deg, rgba(9,9,12,1), transparent 5%, transparent 95%, rgba(9,9,12,1));
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(90deg, rgba(7,8,9,1), transparent 5%, transparent 95%, rgba(7,8,9,1));
 }
 
 .ticker-track {
-  display: inline-flex;
-  width: max-content;
-  align-items: center;
-  white-space: nowrap;
-  color: var(--paper);
-  font: 700 25px/1 'Barlow Condensed', sans-serif;
-  letter-spacing: .25px;
-  will-change: transform;
+  display: inline-flex; width: max-content; align-items: center; white-space: nowrap;
+  color: var(--paper); font: 700 25px/1 'Barlow Condensed', sans-serif;
+  letter-spacing: .25px; will-change: transform;
 }
 
-.item {
-  display: inline-flex;
-  align-items: center;
-}
+.item { display: inline-flex; align-items: center; }
 
 .separator {
-  display: inline-block;
-  margin: 0 26px;
-  width: 7px;
-  height: 7px;
-  transform: rotate(45deg);
-  background: var(--accent-bright);
+  display: inline-block; margin: 0 26px; width: 7px; height: 7px;
+  transform: rotate(45deg); background: var(--up);
 }
 
 .clock {
-  display: grid;
-  place-items: center;
-  border-left: 1px solid rgba(255,255,255,.09);
-  color: var(--muted);
-  font: 700 18px/1 'Barlow Condensed', sans-serif;
+  display: grid; place-items: center; border-left: 1px solid rgba(255,255,255,.09);
+  color: var(--muted); font: 700 18px/1 'Barlow Condensed', sans-serif;
   letter-spacing: 1.5px;
 }
 
