@@ -1,6 +1,6 @@
 const headlines = [
   "BREAKING: Latest developments and major updates from across the country",
-  "Shailesh Gaur Live — stay with us for the latest news and analysis",
+  "Shailesh Gour Live — stay with us for the latest news and analysis",
   "TOP STORY: New developments expected throughout the day"
 ];
 
