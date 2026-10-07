@@ -1,7 +1,8 @@
-const headlines = [
-  "BREAKING: Latest developments and major updates from across the country",
-  "Shailesh Gour Live — stay with us for the latest news and analysis",
-  "TOP STORY: New developments expected throughout the day"
+const socials = [
+  { platform: "instagram", handle: "@instagram_handle", icon: "◎" },
+  { platform: "telegram", handle: "@telegram_handle", icon: "✈" },
+  { platform: "youtube", handle: "@youtube_handle", icon: "▶" },
+  { platform: "whatsapp", handle: "@whatsapp_channel", icon: "◉" }
 ];
 
 const track = document.getElementById("tickerTrack");
@@ -9,11 +10,21 @@ const clock = document.getElementById("clock");
 
 function buildTicker() {
   track.innerHTML = "";
-  const content = [...headlines, ...headlines];
-  content.forEach((headline, index) => {
+  const content = [...socials, ...socials];
+
+  content.forEach((social, index) => {
     const item = document.createElement("span");
-    item.className = "item";
-    item.textContent = headline;
+    item.className = "item social-item";
+
+    const icon = document.createElement("span");
+    icon.className = `social-icon social-icon--${social.platform}`;
+    icon.textContent = social.icon;
+    icon.setAttribute("aria-hidden", "true");
+
+    const handle = document.createElement("span");
+    handle.textContent = social.handle;
+
+    item.append(icon, handle);
     track.appendChild(item);
 
     if (index < content.length - 1) {
