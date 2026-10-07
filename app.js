@@ -107,15 +107,15 @@ function buildSocialBar() {
   const setState = () => {
     showDisclaimer = !showDisclaimer;
     handles.style.opacity = showDisclaimer ? "0" : "1";
-    handles.style.transform = showDisclaimer ? "translateY(4px)" : "translateY(0)";
+    handles.style.transform = showDisclaimer ? "translate(-50%, calc(-50% + 4px))" : "translate(-50%, -50%)";
     disclaimer.style.opacity = showDisclaimer ? "1" : "0";
-    disclaimer.style.transform = showDisclaimer ? "translateY(0)" : "translateY(-4px)";
+    disclaimer.style.transform = showDisclaimer ? "translate(-50%, -50%)" : "translate(-50%, calc(-50% - 4px))";
   };
 
   handles.style.opacity = "1";
-  handles.style.transform = "translateY(0)";
+  handles.style.transform = "translate(-50%, -50%)";
   disclaimer.style.opacity = "0";
-  disclaimer.style.transform = "translateY(-4px)";
+  disclaimer.style.transform = "translate(-50%, calc(-50% - 4px))";
 
   setTimeout(() => setInterval(setState, 4000), 2500);
 }
