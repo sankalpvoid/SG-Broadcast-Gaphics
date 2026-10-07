@@ -6,7 +6,7 @@
   --ink: #070809;
   --paper: #f3f5f4;
   --muted: rgba(243,245,244,.66);
-  --height: 68px;
+  --height: 56px;
 }
 
 * { box-sizing: border-box; }
@@ -34,14 +34,14 @@ body { font-family: Inter, system-ui, sans-serif; }
 }
 
 .brand-logo {
-  display: grid; place-items: center; width: 52px; height: 52px; flex: 0 0 52px;
+  display: grid; place-items: center; width: 40px; height: 40px; flex: 0 0 40px;
   border: 2px dashed rgba(7,8,9,.3); border-radius: 7px;
   color: rgba(7,8,9,.5); background: rgba(7,8,9,.04);
   font: 800 10px/1 Inter, sans-serif; letter-spacing: 1px;
 }
 
 .brand-name {
-  font: 800 18px/1 'Barlow Condensed', sans-serif;
+  font: 800 16px/1 'Barlow Condensed', sans-serif;
   letter-spacing: .8px; white-space: nowrap;
 }
 
@@ -68,7 +68,7 @@ body { font-family: Inter, system-ui, sans-serif; }
 
 .ticker-track {
   display: inline-flex; width: max-content; align-items: center; white-space: nowrap;
-  color: var(--paper); font: 700 25px/1 'Barlow Condensed', sans-serif;
+  color: var(--paper); font: 700 21px/1 'Barlow Condensed', sans-serif;
   letter-spacing: .25px; will-change: transform;
 }
 
@@ -79,15 +79,15 @@ body { font-family: Inter, system-ui, sans-serif; }
 .social-icon {
   display: inline-grid;
   place-items: center;
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   border-radius: 7px;
   color: #070809;
   background: var(--up);
   font: 800 15px/1 Inter, sans-serif;
 }
 
-.social-icon svg { width: 18px; height: 18px; display: block; }
+.social-icon svg { width: 16px; height: 16px; display: block; }
 .social-icon--instagram { background: #f3f5f4; color: #070809; }
 .social-icon--telegram { background: #f3f5f4; color: #070809; }
 .social-icon--youtube { background: #ff3b4e; color: #fff; }
@@ -98,13 +98,13 @@ body { font-family: Inter, system-ui, sans-serif; }
 .social-icon--whatsapp { background: var(--up); }
 
 .separator {
-  display: inline-block; margin: 0 26px; width: 7px; height: 7px;
+  display: inline-block; margin: 0 20px; width: 6px; height: 6px;
   transform: rotate(45deg); background: var(--up);
 }
 
 .clock {
   display: grid; place-items: center; border-left: 1px solid rgba(255,255,255,.09);
-  color: var(--muted); font: 700 18px/1 'Barlow Condensed', sans-serif;
+  color: var(--muted); font: 700 16px/1 'Barlow Condensed', sans-serif;
   letter-spacing: 1.5px;
 }
 
