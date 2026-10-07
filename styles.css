@@ -168,7 +168,7 @@ body { font-family: Inter, system-ui, sans-serif; }
   align-items: center;
   gap: 8px;
   color: var(--paper);
-  font: 800 14px/1 Inter, sans-serif;
+  font: 800 15px/1 Inter, sans-serif;
   letter-spacing: .12px;
   white-space: nowrap;
   flex: 0 0 auto;
@@ -238,7 +238,7 @@ body { font-family: Inter, system-ui, sans-serif; }
   .brand-name { font-size: 16px; }
   .brand-subtitle { font-size: 7.5px; }
   .ticker-track { font-size: 16px; }
-  .social-item { font-size: 14px; }
+  .social-item { font-size: 15px; }
   .disclaimer { font-size: 11px; }
 }
 
@@ -254,7 +254,7 @@ body { font-family: Inter, system-ui, sans-serif; }
   .market-price { font-size: 16px; }
   .market-change { font-size: 10px; }
   .social-bar { padding: 0 9px; }
-  .social-item { font-size: 13px; gap: 6px; }
+  .social-item { font-size: 14px; gap: 6px; }
   .social-icon { width: 17px; height: 17px; flex-basis: 17px; }
   .social-icon svg { width: 15px; height: 15px; }
   .social-separator { margin: 0 8px; height: 13px; }
@@ -273,7 +273,7 @@ body { font-family: Inter, system-ui, sans-serif; }
   .live { font-size: 10px; gap: 4px; }
   .clock { font-size: 10px; letter-spacing: .7px; }
   .social-bar { padding: 0 7px; }
-  .social-item { font-size: 11px; gap: 5px; }
+  .social-item { font-size: 12px; gap: 5px; }
   .social-icon { width: 15px; height: 15px; flex-basis: 15px; }
   .social-icon svg { width: 13px; height: 13px; }
   .social-separator { margin: 0 6px; }
