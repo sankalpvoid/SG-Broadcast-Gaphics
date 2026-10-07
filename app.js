@@ -18,7 +18,7 @@ function buildSocialItem(social) {
   return item;
 }
 
-const marketOrder = ["nifty", "sensex", "banknifty", "finnifty"];
+const marketOrder = ["nifty", "sensex", "banknifty"];
 let marketData = {};
 const track = document.getElementById("tickerTrack");
 const clock = document.getElementById("clock");
@@ -52,12 +52,21 @@ function buildMarketItem(key) {
 
 function buildTicker() {
   track.innerHTML = "";
-  const marketItems = marketOrder.flatMap(key => [key, key]);
-  const socialItems = socials.flatMap(social => [social, social]);
-  const items = [...marketItems, ...socialItems];
+
+  // One complete cycle: social handles -> market indices -> social handles.
+  const items = [
+    ...socials,
+    ...marketOrder,
+    ...socials
+  ];
 
   items.forEach((entry, index) => {
-    track.appendChild(typeof entry === "string" ? buildMarketItem(entry) : buildSocialItem(entry));
+    track.appendChild(
+      typeof entry === "string"
+        ? buildMarketItem(entry)
+        : buildSocialItem(entry)
+    );
+
     if (index < items.length - 1) {
       const separator = document.createElement("span");
       separator.className = "separator";
@@ -67,50 +76,10 @@ function buildTicker() {
   });
 
   if (!Object.keys(marketData).length) {
-    track.querySelectorAll(".market-price").forEach(el => el.textContent = "LOADING");
+    track.querySelectorAll(".market-price").forEach(el => {
+      el.textContent = "LOADING";
+    });
   }
 }
 
-async function fetchMarketData() {
-  try {
-    const response = await fetch("/api/indices", { cache: "no-store" });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const payload = await response.json();
-    marketData = payload.data || {};
-    buildTicker();
-  } catch (error) {
-    console.warn("Market data unavailable:", error);
-    if (!Object.keys(marketData).length) buildTicker();
-  }
-}
 
-let position = 0;
-let last = performance.now();
-const speed = 72;
-
-function animate(now) {
-  const delta = Math.min(now - last, 50);
-  last = now;
-  position -= speed * delta / 1000;
-
-  const resetPoint = track.scrollWidth / 2;
-  if (Math.abs(position) >= resetPoint) position += resetPoint;
-
-  track.style.transform = `translate3d(${position}px,0,0)`;
-  requestAnimationFrame(animate);
-}
-
-function updateClock() {
-  clock.textContent = new Intl.DateTimeFormat("en-IN", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false
-  }).format(new Date());
-}
-
-buildTicker();
-fetchMarketData();
-setInterval(fetchMarketData, 30000);
-updateClock();
-setInterval(updateClock, 1000);
-requestAnimationFrame(animate);
