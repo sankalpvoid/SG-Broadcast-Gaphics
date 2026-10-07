@@ -15,7 +15,7 @@
   --live: #b91c1c;
   --height: 76px;
   --market-height: 45px;
-  --social-height: 30px;
+  --social-height: 36px;
 }
 
 * { box-sizing: border-box; }
@@ -238,12 +238,12 @@ body { font-family: Inter, system-ui, sans-serif; }
   .brand-name { font-size: 16px; }
   .brand-subtitle { font-size: 7.5px; }
   .ticker-track { font-size: 16px; }
-  .social-item { font-size: 12px; }
-  .disclaimer { font-size: 10px; }
+  .social-item { font-size: 13px; }
+  .disclaimer { font-size: 11px; }
 }
 
 @media (max-width: 900px) {
-  :root { --height: 72px; --market-height: 43px; --social-height: 28px; }
+  :root { --height: 78px; --market-height: 42px; --social-height: 35px; }
   .ticker { grid-template-columns: 230px minmax(0,1fr) 68px 82px; }
   .brand { gap: 9px; padding-left: 11px; padding-right: 13px; }
   .brand-mark { width: 29px; height: 29px; flex-basis: 29px; font-size: 10px; }
@@ -254,17 +254,17 @@ body { font-family: Inter, system-ui, sans-serif; }
   .market-price { font-size: 16px; }
   .market-change { font-size: 10px; }
   .social-bar { padding: 0 9px; }
-  .social-item { font-size: 10.5px; gap: 6px; }
+  .social-item { font-size: 12px; gap: 6px; }
   .social-icon { width: 17px; height: 17px; flex-basis: 17px; }
   .social-icon svg { width: 15px; height: 15px; }
   .social-separator { margin: 0 8px; height: 13px; }
-  .disclaimer { font-size: 8.5px; }
+  .disclaimer { font-size: 9.5px; }
   .disclaimer-label { margin-right: 5px; }
   .clock { font-size: 12px; }
 }
 
 @media (max-width: 620px) {
-  :root { --height: 68px; --market-height: 40px; --social-height: 27px; }
+  :root { --height: 74px; --market-height: 39px; --social-height: 34px; }
   .ticker { grid-template-columns: 190px minmax(0,1fr) 62px 76px; }
   .brand { gap: 7px; padding-left: 9px; padding-right: 10px; }
   .brand-mark { width: 26px; height: 26px; flex-basis: 26px; font-size: 9px; }
@@ -273,10 +273,10 @@ body { font-family: Inter, system-ui, sans-serif; }
   .live { font-size: 10px; gap: 4px; }
   .clock { font-size: 10px; letter-spacing: .7px; }
   .social-bar { padding: 0 7px; }
-  .social-item { font-size: 9px; gap: 5px; }
+  .social-item { font-size: 10px; gap: 5px; }
   .social-icon { width: 15px; height: 15px; flex-basis: 15px; }
   .social-icon svg { width: 13px; height: 13px; }
   .social-separator { margin: 0 6px; }
-  .disclaimer { font-size: 7.5px; }
+  .disclaimer { font-size: 8.5px; }
   .disclaimer-label { margin-right: 4px; }
 }
