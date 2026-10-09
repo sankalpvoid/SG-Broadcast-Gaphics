@@ -28,7 +28,7 @@ body { font-family: Inter, system-ui, sans-serif; }
   width: 100%;
   height: var(--height);
   display: grid;
-  grid-template-columns: 250px minmax(0,1fr) 76px 92px;
+  grid-template-columns: 225px minmax(0,1fr) 76px 92px;
   align-items: stretch;
   overflow: hidden;
   border-top: 1px solid var(--line-soft);
@@ -253,7 +253,7 @@ body { font-family: Inter, system-ui, sans-serif; }
 @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.42; } }
 
 @media (max-width: 1200px) {
-  .ticker { grid-template-columns: 230px minmax(0,1fr) 72px 88px; }
+  .ticker { grid-template-columns: 210px minmax(0,1fr) 72px 88px; }
   .brand-name { font-size: 16px; }
   .brand-subtitle { font-size: 7.5px; }
   .ticker-track { font-size: 16px; }
@@ -263,7 +263,7 @@ body { font-family: Inter, system-ui, sans-serif; }
 
 @media (max-width: 900px) {
   :root { --height: 78px; --market-height: 42px; --social-height: 35px; }
-  .ticker { grid-template-columns: 210px minmax(0,1fr) 68px 82px; }
+  .ticker { grid-template-columns: 195px minmax(0,1fr) 68px 82px; }
   .brand { gap: 9px; padding-left: 11px; padding-right: 13px; }
   .brand-mark { width: 29px; height: 29px; flex-basis: 29px; font-size: 10px; }
   .brand-name { font-size: 14px; }
