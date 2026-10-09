@@ -5,88 +5,107 @@ const socials = [
   { platform: "whatsapp", handle: "@whatsapp_channel", icon: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a9.5 9.5 0 0 0-8.2 14.3L2.5 21.5l4.9-1.3A9.5 9.5 0 1 0 12 2.5Zm0 17a7.5 7.5 0 0 1-3.8-1l-.3-.2-2.9.8.8-2.8-.2-.3A7.5 7.5 0 1 1 12 19.5Zm4.1-5.6c-.2-.1-1.2-.6-1.4-.7-.2-.1-.3-.1-.5.1-.1.2-.5.7-.6.8-.1.2-.3.2-.5.1-1.5-.7-2.5-1.3-3.5-2.9-.3-.5.3-.4.8-1.3.1-.2.1-.3 0-.5l-.6-1.4c-.2-.4-.3-.4-.5-.4h-.4c-.2 0-.5.1-.7.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.3c.1.2 1.5 2.3 3.6 3.2 1.4.6 1.9.7 2.6.6.4-.1 1.2-.5 1.4-1 .2-.5.2-.9.1-1Z" fill="currentColor"/></svg>` }
 ];
 
-const marketOrder = ["nifty", "sensex", "banknifty"];
-let marketData = {};
-
 const track = document.getElementById("tickerTrack");
 const clock = document.getElementById("clock");
+const socialBar = document.getElementById("socialBar");
+let newsEvents = [];
+let feedStatus = "loading";
 
-function formatPrice(value) {
-  return Number(value).toLocaleString("en-IN", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
-}
-
-function buildSocialItem(social) {
-  const item = document.createElement("span");
-  item.className = "item social-item";
-
-  const icon = document.createElement("span");
-  icon.className = `social-icon social-icon--${social.platform}`;
-  icon.innerHTML = social.icon;
-  icon.setAttribute("aria-hidden", "true");
-
-  const handle = document.createElement("span");
-  handle.textContent = social.handle;
-
-  item.append(icon, handle);
-  return item;
-}
-
-function buildMarketItem(key) {
-  const item = marketData[key];
+function buildNewsItem(event) {
   const wrapper = document.createElement("span");
-  wrapper.className = "item market-item";
+  wrapper.className = "item news-item";
+  wrapper.title = event.title || "USD economic event";
 
-  const name = document.createElement("span");
-  name.className = "market-name";
-  name.textContent = item?.name || key.toUpperCase();
+  const currency = document.createElement("span");
+  currency.className = "news-currency";
+  currency.textContent = "USD";
 
-  const price = document.createElement("span");
-  price.className = "market-price";
-  price.textContent = item?.price != null ? formatPrice(item.price) : "—";
+  const impact = document.createElement("span");
+  const level = String(event.impact || "Low").toLowerCase();
+  impact.className = `impact-dot impact-dot--${["high", "medium", "low"].includes(level) ? level : "low"}`;
+  impact.setAttribute("aria-label", `${event.impact || "Low"} impact`);
+  impact.title = `${event.impact || "Low"} impact`;
 
-  const change = document.createElement("span");
-  const percent = Number(item?.percent);
-  const valid = Number.isFinite(percent);
-  change.className = `market-change ${valid ? percent > 0 ? "market-change--up" : percent < 0 ? "market-change--down" : "market-change--flat" : "market-change--flat"}`;
-  change.textContent = valid
-    ? `${percent >= 0 ? "▲" : "▼"} ${Math.abs(percent).toFixed(2)}%`
-    : "—";
+  const title = document.createElement("span");
+  title.className = "news-title";
+  title.textContent = event.title || "Economic release";
 
-  wrapper.append(name, price, change);
+  const time = document.createElement("span");
+  time.className = "news-time";
+  const date = new Date(event.date);
+  time.textContent = Number.isNaN(date.getTime())
+    ? "TIME TBA"
+    : new Intl.DateTimeFormat("en-IN", { timeZone: "Asia/Kolkata", hour: "2-digit", minute: "2-digit", hour12: false }).format(date) + " IST";
+
+  wrapper.append(currency, impact, title, time);
+
+  const metrics = [
+    ["ACT", event.actual],
+    ["FCST", event.forecast],
+    ["PREV", event.previous]
+  ].filter(([, value]) => value !== null && value !== undefined && String(value).trim() !== "");
+
+  if (metrics.length) {
+    const values = document.createElement("span");
+    values.className = "news-values";
+    values.textContent = metrics.map(([label, value]) => `${label} ${value}`).join("  ·  ");
+    wrapper.appendChild(values);
+  }
   return wrapper;
 }
 
-function appendMarketSeparator() {
+function buildStatusItem(message) {
+  const item = document.createElement("span");
+  item.className = "item news-item news-status";
+  item.textContent = message;
+  return item;
+}
+
+function appendSeparator() {
   const separator = document.createElement("span");
   separator.className = "separator";
   separator.setAttribute("aria-hidden", "true");
   track.appendChild(separator);
 }
 
-function appendCycle() {
-  marketOrder.forEach((entry) => {
-    track.appendChild(buildMarketItem(entry));
-    appendMarketSeparator();
-  });
+function appendNewsCycle() {
+  if (newsEvents.length) {
+    newsEvents.forEach((event) => {
+      track.appendChild(buildNewsItem(event));
+      appendSeparator();
+    });
+  } else {
+    const message = feedStatus === "error"
+      ? "USD NEWS FEED UNAVAILABLE"
+      : "USD ECONOMIC CALENDAR · NO UPCOMING RELEASES";
+    track.appendChild(buildStatusItem(message));
+    appendSeparator();
+  }
 }
 
 function buildTicker() {
   track.innerHTML = "";
-  appendCycle();
-  appendCycle();
+  appendNewsCycle();
+  appendNewsCycle();
 }
 
-const socialBar = document.getElementById("socialBar");
+function buildSocialItem(social) {
+  const item = document.createElement("span");
+  item.className = "item social-item";
+  const icon = document.createElement("span");
+  icon.className = `social-icon social-icon--${social.platform}`;
+  icon.innerHTML = social.icon;
+  icon.setAttribute("aria-hidden", "true");
+  const handle = document.createElement("span");
+  handle.textContent = social.handle;
+  item.append(icon, handle);
+  return item;
+}
 
 function buildSocialBar() {
   socialBar.innerHTML = "";
-
   const handles = document.createElement("div");
   handles.className = "social-state social-state--handles";
-
   socials.forEach((social, index) => {
     handles.appendChild(buildSocialItem(social));
     if (index < socials.length - 1) {
@@ -100,7 +119,6 @@ function buildSocialBar() {
   const disclaimer = document.createElement("div");
   disclaimer.className = "social-state disclaimer";
   disclaimer.textContent = "For educational purposes only. Not financial or investment advice. Do your own research before investing.";
-
   socialBar.append(handles, disclaimer);
 
   let showDisclaimer = false;
@@ -111,53 +129,44 @@ function buildSocialBar() {
     disclaimer.style.opacity = showDisclaimer ? "1" : "0";
     disclaimer.style.transform = showDisclaimer ? "translateY(0)" : "translateY(-4px)";
   };
-
   handles.style.opacity = "1";
   handles.style.transform = "translateY(0)";
   disclaimer.style.opacity = "0";
   disclaimer.style.transform = "translateY(-4px)";
-
   setTimeout(() => setInterval(setState, 4000), 2500);
 }
 
-async function fetchMarketData() {
+async function fetchUsdNews() {
   try {
-    const response = await fetch("/api/indices", { cache: "no-store" });
+    const response = await fetch("/api/usd-news", { cache: "no-store" });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
     const payload = await response.json();
-    marketData = payload.data || {};
-    buildTicker();
+    newsEvents = Array.isArray(payload.events) ? payload.events : [];
+    feedStatus = "ready";
   } catch (error) {
-    console.warn("Market data unavailable:", error);
-    buildTicker();
+    console.warn("USD economic news unavailable:", error);
+    newsEvents = [];
+    feedStatus = "error";
   }
+  buildTicker();
 }
 
 let position = 0;
 let last = performance.now();
 const speed = 52;
-
 function animate(now) {
   const delta = Math.min(now - last, 50);
   last = now;
   position -= speed * delta / 1000;
-
   const resetPoint = track.scrollWidth / 2;
-  if (resetPoint > 0 && -position >= resetPoint) {
-    position += resetPoint;
-  }
-
+  if (resetPoint > 0 && -position >= resetPoint) position += resetPoint;
   track.style.transform = `translate3d(${position}px,0,0)`;
   requestAnimationFrame(animate);
 }
 
 function updateClock() {
   clock.textContent = new Intl.DateTimeFormat("en-IN", {
-    timeZone: "Asia/Kolkata",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false
+    timeZone: "Asia/Kolkata", hour: "2-digit", minute: "2-digit", hour12: false
   }).format(new Date()) + " IST";
 }
 
@@ -166,6 +175,5 @@ buildSocialBar();
 updateClock();
 setInterval(updateClock, 1000);
 requestAnimationFrame(animate);
-
-fetchMarketData();
-setInterval(fetchMarketData, 30000);
+fetchUsdNews();
+setInterval(fetchUsdNews, 5 * 60 * 1000);
