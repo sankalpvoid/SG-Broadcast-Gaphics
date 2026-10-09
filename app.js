@@ -152,7 +152,7 @@ function updateForexItem(item, pair, quote) {
   const stale = quote.stale === true || Number(quote.quoteAgeSeconds) > 300;
   const percent = Number(quote.dayDiffPercent);
   change.classList.remove("forex-change--up", "forex-change--down", "forex-change--flat");
-  if (closed || stale || !Number.isFinite(percent)) {
+  if (closed || stale || quote.dayDiffPercent == null || quote.dayDiffPercent === "" || !Number.isFinite(percent)) {
     change.classList.add("forex-change--flat");
     change.textContent = "—";
   } else {
