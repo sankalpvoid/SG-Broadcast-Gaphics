@@ -681,3 +681,118 @@ body { font-family: Inter, system-ui, sans-serif; }
   .forex-change { font-size: 8px; }
   .forex-state { font-size: 6px; }
 }
+
+
+/* Social-only ticker: remove the market/news row entirely and give handles the full height. */
+.market-window { display: none !important; }
+.ticker-body {
+  grid-template-rows: minmax(0, 1fr) !important;
+  min-height: 0;
+}
+.social-bar {
+  height: 100%;
+  min-height: 0;
+  border: 0;
+  padding: 0 20px;
+}
+.social-bar--marquee .social-state { padding: 0 20px; }
+@media screen and (min-width: 901px) {
+  .ticker .social-bar--marquee .social-item {
+    font-size: 20px;
+    gap: 10px;
+    letter-spacing: .15px;
+  }
+  .ticker .social-bar--marquee .social-icon {
+    width: 24px;
+    height: 24px;
+    flex-basis: 24px;
+  }
+  .ticker .social-bar--marquee .social-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  .ticker .social-bar--marquee .social-separator {
+    height: 22px;
+    margin: 0 20px;
+  }
+}
+@media screen and (min-width: 621px) and (max-width: 900px) {
+  .ticker .social-bar--marquee .social-item {
+    font-size: 16px;
+    gap: 8px;
+  }
+  .ticker .social-bar--marquee .social-icon {
+    width: 21px;
+    height: 21px;
+    flex-basis: 21px;
+  }
+  .ticker .social-bar--marquee .social-icon svg {
+    width: 19px;
+    height: 19px;
+  }
+  .ticker .social-bar--marquee .social-separator { margin: 0 12px; }
+}
+@media screen and (max-width: 620px) {
+  .ticker .social-bar--marquee .social-item {
+    font-size: 14px;
+    gap: 7px;
+  }
+  .ticker .social-bar--marquee .social-icon {
+    width: 18px;
+    height: 18px;
+    flex-basis: 18px;
+  }
+  .ticker .social-bar--marquee .social-icon svg {
+    width: 17px;
+    height: 17px;
+  }
+  .ticker .social-bar--marquee .social-separator {
+    height: 16px;
+    margin: 0 10px;
+  }
+}
+
+
+/* Refined social-only ticker: wider identity block, slimmer height, clearer disclaimer. */
+:root { --height: 64px; }
+.ticker { grid-template-columns: 300px minmax(0,1fr) 76px 92px; }
+.brand { gap: 13px; padding-left: 18px; padding-right: 20px; }
+.brand-mark-frame { width: 36px; height: 36px; flex-basis: 36px; }
+.brand-name { font-size: 22px; letter-spacing: .8px; }
+.brand-subtitle {
+  display: block;
+  font-size: 8px;
+  line-height: 1.15;
+  letter-spacing: .75px;
+  white-space: nowrap;
+}
+.brand-subtitle > span { display: inline; }
+.brand-subtitle > span + span::before { content: " "; }
+.disclaimer { font-size: 14px; line-height: 1.15; letter-spacing: .1px; }
+.disclaimer-label { margin-right: 7px; }
+.ticker-body { grid-template-rows: minmax(0,1fr) !important; }
+.social-bar--marquee .social-state { padding: 0 16px; }
+@media (max-width: 1200px) {
+  .ticker { grid-template-columns: 280px minmax(0,1fr) 72px 88px; }
+  .brand-name { font-size: 20px; }
+  .brand-subtitle { font-size: 7.5px; }
+  .disclaimer { font-size: 12px; }
+}
+@media screen and (min-width: 768px) and (max-width: 900px) {
+  :root { --height: 60px; }
+  .ticker { grid-template-columns: 260px minmax(0,1fr) 68px 82px; }
+  .brand-name { font-size: 18px; }
+  .brand-subtitle { font-size: 7px; letter-spacing: .45px; }
+  .disclaimer { font-size: 10px; }
+}
+@media screen and (max-width: 767px) {
+  :root { --height: 56px; }
+  .ticker { grid-template-columns: 48px minmax(0,1fr) !important; }
+  .ticker > .brand { width: 48px !important; min-width: 48px !important; max-width: 48px !important; }
+  .ticker > .brand .brand-mark-frame { width: 28px; height: 28px; flex-basis: 28px; }
+  .ticker .social-bar--marquee .social-item { font-size: 12px; gap: 6px; }
+  .ticker .social-bar--marquee .social-icon { width: 16px; height: 16px; flex-basis: 16px; }
+  .ticker .social-bar--marquee .social-icon svg { width: 15px; height: 15px; }
+  .disclaimer { font-size: 10px; }
+  .social-bar--marquee .social-state { padding: 0; }
+}
