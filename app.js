@@ -9,10 +9,11 @@ const socials = [
 const track = document.getElementById("tickerTrack");
 const clock = document.getElementById("clock");
 const socialBar = document.getElementById("socialBar");
-const NEWS_REFRESH_MS = 5 * 60 * 1000;
+const NEWS_REFRESH_MS = 60 * 60 * 1000; // ForexFactory export updates hourly and is rate-limited.
 let tickerPosition = 0;
 let lastFrame = performance.now();
 let refreshInFlight = false;
+let lastFetchAt = 0;
 const speed = 52;
 
 function buildSocialItem(social) {
@@ -131,9 +132,11 @@ function renderNews(events, message) {
   track.insertAdjacentHTML("beforeend", track.innerHTML);
 }
 
-async function fetchNews() {
+async function fetchNews(force = false) {
   if (refreshInFlight) return;
+  if (!force && lastFetchAt && Date.now() - lastFetchAt < NEWS_REFRESH_MS) return;
   refreshInFlight = true;
+  lastFetchAt = Date.now();
   try {
     const response = await fetch("/api/news", { cache: "no-store" });
     const payload = await response.json();
@@ -180,5 +183,5 @@ requestAnimationFrame(animate);
 fetchNews();
 setInterval(fetchNews, NEWS_REFRESH_MS);
 document.addEventListener("visibilitychange", () => {
-  if (!document.hidden) fetchNews();
+  if (!document.hidden) fetchNews(false);
 });
