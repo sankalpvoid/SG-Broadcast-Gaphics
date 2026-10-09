@@ -139,13 +139,10 @@ async function fetchNews(force = false) {
     const today = todayInIndia();
     const events = (Array.isArray(payload.events) ? payload.events : [])
       .filter(event => event.currency === "USD" && event.date)
-      .filter(event => new Intl.DateTimeFormat("en-CA", {
-        timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit", day: "2-digit"
-      }).format(new Date(event.date)) === today)
       .sort((a, b) => new Date(a.date) - new Date(b.date));
-    renderNews(events, "NO USD EVENTS SCHEDULED FOR TODAY");
-    track.title = `USD calendar · updated ${new Date(payload.updatedAt || Date.now()).toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata" })} IST`;
-    console.info(`USD calendar refreshed: ${events.length} event(s) for ${today}`);
+    renderNews(events, "NO USD EVENTS SCHEDULED FOR TODAY OR TOMORROW");
+    track.title = `USD calendar · ${payload.todayCount ?? events.length} event(s) today; showing ${events.length} across today/next day when needed · updated ${new Date(payload.updatedAt || Date.now()).toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata" })} IST`;
+    console.info(`USD calendar refreshed: ${events.length} event(s) selected for ${today}`);
   } catch (error) {
     console.error("USD news unavailable:", error);
     renderNews([], "USD NEWS FEED UNAVAILABLE — RETRYING");
