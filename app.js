@@ -122,3 +122,27 @@ function buildSocialBar() {
   updateMode();
 }
 buildSocialBar();
+
+
+// Live India Standard Time clock. Use the IANA zone so the display is independent
+// of the machine/browser's configured timezone, and refresh every second.
+(function initIndiaClock() {
+  const clock = document.getElementById("clock");
+  if (!clock) return;
+
+  const formatter = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Asia/Kolkata",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false
+  });
+
+  const updateClock = () => {
+    clock.textContent = formatter.format(new Date()) + " IST";
+    clock.setAttribute("aria-label", "India Standard Time " + clock.textContent);
+  };
+
+  updateClock();
+  window.setInterval(updateClock, 1000);
+})();
