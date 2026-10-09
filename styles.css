@@ -638,3 +638,28 @@ body { font-family: Inter, system-ui, sans-serif; }
   .forex-change { font-size: 8px; }
   .forex-state { font-size: 6px; }
 }
+
+
+/* Clear visual break between the FX quote group and the USD news group */
+.section-divider {
+  display: inline-block;
+  flex: 0 0 2px;
+  width: 2px;
+  height: 28px;
+  margin: 0 28px 0 24px;
+  border-radius: 2px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--gold) 18%,
+    var(--gold) 82%,
+    transparent 100%
+  );
+  opacity: .9;
+}
+@media (max-width: 900px) {
+  .section-divider { height: 24px; margin: 0 20px 0 18px; }
+}
+@media (max-width: 767px) {
+  .section-divider { height: 20px; margin: 0 14px 0 12px; }
+}
