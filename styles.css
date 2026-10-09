@@ -681,3 +681,73 @@ body { font-family: Inter, system-ui, sans-serif; }
   .forex-change { font-size: 8px; }
   .forex-state { font-size: 6px; }
 }
+
+
+/* Social-only ticker: remove the market/news row entirely and give handles the full height. */
+.market-window { display: none !important; }
+.ticker-body {
+  grid-template-rows: minmax(0, 1fr) !important;
+  min-height: 0;
+}
+.social-bar {
+  height: 100%;
+  min-height: 0;
+  border: 0;
+  padding: 0 20px;
+}
+.social-bar--marquee .social-state { padding: 0 20px; }
+@media screen and (min-width: 901px) {
+  .ticker .social-bar--marquee .social-item {
+    font-size: 20px;
+    gap: 10px;
+    letter-spacing: .15px;
+  }
+  .ticker .social-bar--marquee .social-icon {
+    width: 24px;
+    height: 24px;
+    flex-basis: 24px;
+  }
+  .ticker .social-bar--marquee .social-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  .ticker .social-bar--marquee .social-separator {
+    height: 22px;
+    margin: 0 20px;
+  }
+}
+@media screen and (min-width: 621px) and (max-width: 900px) {
+  .ticker .social-bar--marquee .social-item {
+    font-size: 16px;
+    gap: 8px;
+  }
+  .ticker .social-bar--marquee .social-icon {
+    width: 21px;
+    height: 21px;
+    flex-basis: 21px;
+  }
+  .ticker .social-bar--marquee .social-icon svg {
+    width: 19px;
+    height: 19px;
+  }
+  .ticker .social-bar--marquee .social-separator { margin: 0 12px; }
+}
+@media screen and (max-width: 620px) {
+  .ticker .social-bar--marquee .social-item {
+    font-size: 14px;
+    gap: 7px;
+  }
+  .ticker .social-bar--marquee .social-icon {
+    width: 18px;
+    height: 18px;
+    flex-basis: 18px;
+  }
+  .ticker .social-bar--marquee .social-icon svg {
+    width: 17px;
+    height: 17px;
+  }
+  .ticker .social-bar--marquee .social-separator {
+    height: 16px;
+    margin: 0 10px;
+  }
+}
