@@ -10,6 +10,18 @@ const track = document.getElementById("tickerTrack");
 const clock = document.getElementById("clock");
 const socialBar = document.getElementById("socialBar");
 const NEWS_REFRESH_MS = 60 * 60 * 1000; // ForexFactory export updates hourly and is rate-limited.
+const FOREX_REFRESH_MS = 15 * 1000;
+const FOREX_PAIRS = [
+  { symbol: "EURUSD", label: "EUR/USD", digits: 5 },
+  { symbol: "GBPUSD", label: "GBP/USD", digits: 5 },
+  { symbol: "USDJPY", label: "USD/JPY", digits: 3 },
+  { symbol: "AUDUSD", label: "AUD/USD", digits: 5 },
+  { symbol: "USDCAD", label: "USD/CAD", digits: 5 },
+  { symbol: "USDCHF", label: "USD/CHF", digits: 5 }
+];
+let newsEvents = [];
+let newsStatus = "LOADING USD ECONOMIC NEWS";
+let forexQuotes = new Map();
 let tickerPosition = 0;
 let lastFrame = performance.now();
 let refreshInFlight = false;
@@ -107,26 +119,95 @@ function buildEventItem(event) {
   return item;
 }
 
-function renderNews(events, message) {
+function buildForexItem(pair) {
+  const item = document.createElement("span");
+  item.className = "item forex-item";
+  item.dataset.forexSymbol = pair.symbol;
+  const label = document.createElement("span");
+  label.className = "forex-label";
+  label.textContent = pair.label;
+  const price = document.createElement("span");
+  price.className = "forex-price";
+  price.textContent = "--";
+  const change = document.createElement("span");
+  change.className = "forex-change forex-change--flat";
+  change.textContent = "—";
+  const state = document.createElement("span");
+  state.className = "forex-state";
+  state.textContent = "LIVE";
+  item.append(label, price, change, state);
+  const quote = forexQuotes.get(pair.symbol);
+  if (quote) updateForexItem(item, pair, quote);
+  return item;
+}
+
+function updateForexItem(item, pair, quote) {
+  const price = item.querySelector(".forex-price");
+  const change = item.querySelector(".forex-change");
+  const state = item.querySelector(".forex-state");
+  const rawPrice = Number(quote.mid ?? quote.bid ?? quote.ask);
+  price.textContent = Number.isFinite(rawPrice) && rawPrice > 0 ? rawPrice.toFixed(pair.digits) : "--";
+
+  const closed = String(quote.marketState || "").toLowerCase() === "closed";
+  const stale = quote.stale === true || Number(quote.quoteAgeSeconds) > 300;
+  const percent = Number(quote.dayDiffPercent);
+  change.classList.remove("forex-change--up", "forex-change--down", "forex-change--flat");
+  if (closed || stale || !Number.isFinite(percent)) {
+    change.classList.add("forex-change--flat");
+    change.textContent = "—";
+  } else {
+    change.classList.add(percent > 0 ? "forex-change--up" : percent < 0 ? "forex-change--down" : "forex-change--flat");
+    change.textContent = `${percent > 0 ? "+" : ""}${percent.toFixed(2)}%`;
+  }
+  state.classList.toggle("forex-state--stale", stale);
+  state.textContent = closed ? "CLOSED" : stale ? "STALE" : "LIVE";
+  item.title = `${pair.label} · ${closed ? "market closed — last quote" : stale ? "quote may be delayed" : "live quote"}${quote.timestamp ? " · " + quote.timestamp : ""}`;
+}
+
+function updateForexPrices() {
+  for (const pair of FOREX_PAIRS) {
+    const quote = forexQuotes.get(pair.symbol);
+    if (!quote) continue;
+    track.querySelectorAll(`[data-forex-symbol="${pair.symbol}"]`).forEach(item => updateForexItem(item, pair, quote));
+  }
+}
+
+function renderTicker() {
   track.innerHTML = "";
   tickerPosition = 0;
-  if (!events.length) {
+  const appendSeparator = () => {
+    const separator = document.createElement("span");
+    separator.className = "separator";
+    separator.setAttribute("aria-hidden", "true");
+    track.appendChild(separator);
+  };
+  if (!newsEvents.length) {
     const status = document.createElement("span");
     status.className = "item news-item news-item--status";
-    status.textContent = message || "NO USD EVENTS SCHEDULED FOR TODAY";
+    status.textContent = newsStatus;
     track.appendChild(status);
   } else {
-    events.forEach((event, index) => {
+    newsEvents.forEach((event, index) => {
+      if (index) appendSeparator();
       track.appendChild(buildEventItem(event));
-      if (index < events.length - 1) {
-        const separator = document.createElement("span");
-        separator.className = "separator";
-        separator.setAttribute("aria-hidden", "true");
-        track.appendChild(separator);
-      }
     });
   }
+  appendSeparator();
+  const fxHeading = document.createElement("span");
+  fxHeading.className = "item forex-heading";
+  fxHeading.textContent = "FX SPOT";
+  track.appendChild(fxHeading);
+  FOREX_PAIRS.forEach(pair => {
+    appendSeparator();
+    track.appendChild(buildForexItem(pair));
+  });
   track.insertAdjacentHTML("beforeend", track.innerHTML);
+}
+
+function renderNews(events, message) {
+  newsEvents = events;
+  newsStatus = message || "NO USD EVENTS SCHEDULED";
+  renderTicker();
 }
 
 async function fetchNews(force = false) {
@@ -154,6 +235,30 @@ async function fetchNews(force = false) {
   }
 }
 
+
+async function fetchForex() {
+  try {
+    const response = await fetch("/api/forex", { cache: "no-store" });
+    const payload = await response.json();
+    if (!response.ok) throw new Error(payload?.error || `FX feed HTTP ${response.status}`);
+    const quotes = Array.isArray(payload.quotes) ? payload.quotes : [];
+    for (const quote of quotes) {
+      const symbol = String(quote.symbol || "").toUpperCase();
+      if (FOREX_PAIRS.some(pair => pair.symbol === symbol)) forexQuotes.set(symbol, quote);
+    }
+    updateForexPrices();
+    if (!track.querySelector(".forex-item")) renderTicker();
+    const updated = payload.updatedAt ? new Date(payload.updatedAt).toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata" }) : "recently";
+    track.title = `USD economic news + major FX pairs · FX quotes refreshed ${updated} IST · source: biquote MT5 feed`;
+  } catch (error) {
+    console.error("FX prices unavailable:", error);
+    track.querySelectorAll(".forex-state").forEach(state => {
+      state.textContent = "UNAVAILABLE";
+      state.classList.add("forex-state--stale");
+    });
+  }
+}
+
 function updateClock() {
   clock.textContent = new Intl.DateTimeFormat("en-IN", {
     timeZone: "Asia/Kolkata", hour: "2-digit", minute: "2-digit", hour12: false
@@ -176,6 +281,8 @@ setInterval(updateClock, 1000);
 requestAnimationFrame(animate);
 fetchNews();
 setInterval(fetchNews, NEWS_REFRESH_MS);
+fetchForex();
+setInterval(fetchForex, FOREX_REFRESH_MS);
 document.addEventListener("visibilitychange", () => {
-  if (!document.hidden) fetchNews(false);
+  if (!document.hidden) { fetchNews(false); fetchForex(); }
 });
