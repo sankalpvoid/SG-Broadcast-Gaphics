@@ -280,3 +280,54 @@ body { font-family: Inter, system-ui, sans-serif; }
   .disclaimer { font-size: 8.5px; }
   .disclaimer-label { margin-right: 4px; }
 }
+
+
+/* ForexFactory USD economic calendar */
+.news-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: var(--market-height);
+  padding: 0 2px;
+  color: var(--paper);
+  white-space: nowrap;
+}
+.news-time {
+  color: var(--gold);
+  font: 800 12px/1 Inter, sans-serif;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .2px;
+}
+.news-impact {
+  padding: 4px 5px 3px;
+  border: 1px solid currentColor;
+  font: 800 8px/1 Inter, sans-serif;
+  letter-spacing: .55px;
+}
+.impact--high { color: #ff6868; }
+.impact--medium { color: #e9b95e; }
+.impact--low { color: #7fa8c9; }
+.impact--other { color: var(--muted); }
+.news-title {
+  color: var(--paper);
+  font: 800 14px/1 'Barlow Condensed', sans-serif;
+  letter-spacing: .35px;
+}
+.news-details {
+  color: var(--muted);
+  font: 600 10px/1 Inter, sans-serif;
+  letter-spacing: .15px;
+}
+.news-item--status {
+  padding: 0 24px;
+  color: var(--muted);
+  font: 800 12px/1 Inter, sans-serif;
+  letter-spacing: .9px;
+}
+@media (max-width: 900px) {
+  .news-item { gap: 7px; }
+  .news-time { font-size: 10px; }
+  .news-title { font-size: 13px; }
+  .news-details { font-size: 9px; }
+  .news-impact { font-size: 7px; }
+}
