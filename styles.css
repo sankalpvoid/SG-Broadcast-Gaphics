@@ -523,3 +523,33 @@ body { font-family: Inter, system-ui, sans-serif; }
     min-width: 0 !important;
   }
 }
+
+
+/* Desktop/laptop: keep social handles fixed. Mobile alone uses the marquee. */
+@media screen and (min-width: 768px) {
+  .social-bar--marquee .social-marquee {
+    animation: none !important;
+    transform: none !important;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .social-bar--marquee .social-marquee__group {
+    padding-right: 0;
+  }
+
+  .social-bar--marquee .social-marquee__group[aria-hidden="true"] {
+    display: none !important;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .social-bar--marquee .social-marquee {
+    width: max-content;
+    animation: social-marquee-scroll 23s linear infinite;
+  }
+
+  .social-bar--marquee .social-marquee__group[aria-hidden="true"] {
+    display: flex !important;
+  }
+}
