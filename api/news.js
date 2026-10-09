@@ -28,11 +28,15 @@ export default async function handler(req, res) {
     if (!Array.isArray(events)) throw new Error("Unexpected calendar feed format");
 
     const today = dayKeyInIndia(new Date());
-    const usdEvents = events
+    const tomorrowDate = new Date();
+    tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+    const tomorrow = dayKeyInIndia(tomorrowDate);
+    const allUsdEvents = events
       .filter(event => String(event.currency || event.country || "").toUpperCase() === "USD")
-      .filter(event => event.date && dayKeyInIndia(event.date) === today)
+      .filter(event => event.date)
       .map(event => ({
         date: event.date,
+        day: dayKeyInIndia(event.date),
         title: event.title || event.event || "USD economic event",
         currency: "USD",
         impact: event.impact || "Unspecified",
@@ -40,12 +44,21 @@ export default async function handler(req, res) {
         forecast: event.forecast ?? "",
         previous: event.previous ?? ""
       }))
+      .filter(event => event.day === today || event.day === tomorrow)
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+    const todayEvents = allUsdEvents.filter(event => event.day === today);
+    // Show every event today; if today's calendar has fewer than three, include tomorrow too.
+    const usdEvents = todayEvents.length >= 3
+      ? todayEvents
+      : allUsdEvents.filter(event => event.day === today || event.day === tomorrow);
 
     res.status(200).json({
       source: "ForexFactory weekly calendar export",
       timeZone: TIME_ZONE,
       day: today,
+      tomorrow,
+      todayCount: todayEvents.length,
       count: usdEvents.length,
       events: usdEvents,
       updatedAt: new Date().toISOString()
