@@ -650,6 +650,13 @@ body { font-family: Inter, system-ui, sans-serif; }
   font: 700 15px/1 'Barlow Condensed', sans-serif;
   font-variant-numeric: tabular-nums;
 }
+/* Color the pair and its quote to match the daily direction. */
+.forex-item--up .forex-label,
+.forex-item--up .forex-price { color: var(--up); }
+.forex-item--down .forex-label,
+.forex-item--down .forex-price { color: var(--down); }
+.forex-item--flat .forex-label,
+.forex-item--flat .forex-price { color: var(--paper); }
 .forex-change {
   font: 800 11px/1 Inter, sans-serif;
   font-variant-numeric: tabular-nums;
