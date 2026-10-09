@@ -624,3 +624,55 @@ body { font-family: Inter, system-ui, sans-serif; }
 @media (prefers-reduced-motion: reduce) {
   .social-state { transition-duration: .01ms; }
 }
+
+
+/* Forex pairs and daily movement */
+.forex-heading {
+  color: var(--gold);
+  font: 800 11px/1 Inter, sans-serif;
+  letter-spacing: .8px;
+  white-space: nowrap;
+}
+.forex-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 2px;
+  white-space: nowrap;
+}
+.forex-label {
+  color: var(--paper);
+  font: 700 12px/1 Inter, sans-serif;
+  letter-spacing: .05px;
+}
+.forex-price {
+  color: var(--paper);
+  font: 700 15px/1 'Barlow Condensed', sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+.forex-change {
+  font: 800 11px/1 Inter, sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+.forex-change--up { color: var(--up); }
+.forex-change--down { color: var(--down); }
+.forex-change--flat { color: var(--muted); }
+.forex-state {
+  color: var(--muted-dim);
+  font: 700 8px/1 Inter, sans-serif;
+  letter-spacing: .5px;
+}
+.forex-state--stale { color: var(--down); }
+@media (max-width: 900px) {
+  .forex-item { gap: 5px; }
+  .forex-label { font-size: 10px; }
+  .forex-price { font-size: 13px; }
+  .forex-change { font-size: 9px; }
+  .forex-state { font-size: 7px; }
+}
+@media (max-width: 620px) {
+  .forex-label { font-size: 9px; }
+  .forex-price { font-size: 12px; }
+  .forex-change { font-size: 8px; }
+  .forex-state { font-size: 6px; }
+}
