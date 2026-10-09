@@ -581,3 +581,60 @@ body { font-family: Inter, system-ui, sans-serif; }
     display: flex !important;
   }
 }
+
+
+/* Live major-pair quotes, integrated into the same news marquee */
+.forex-heading {
+  display: inline-flex;
+  align-items: center;
+  color: var(--gold);
+  font: 800 11px/1 Inter, sans-serif;
+  letter-spacing: 1.2px;
+  padding: 0 4px;
+}
+.forex-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  padding: 0 2px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.forex-label {
+  color: #d6dce2;
+  font: 800 11px/1 Inter, sans-serif;
+  letter-spacing: .25px;
+}
+.forex-price {
+  color: var(--paper);
+  font: 700 18px/1 'Barlow Condensed', sans-serif;
+}
+.forex-change {
+  font: 800 10px/1 Inter, sans-serif;
+  letter-spacing: .1px;
+}
+.forex-change--up { color: var(--up); }
+.forex-change--down { color: var(--down); }
+.forex-change--flat { color: var(--muted); }
+.forex-state {
+  color: var(--muted-dim);
+  font: 700 8px/1 Inter, sans-serif;
+  letter-spacing: .5px;
+}
+.forex-state--stale { color: #f59e0b; }
+@media (max-width: 900px) {
+  .forex-heading { font-size: 10px; }
+  .forex-item { gap: 5px; }
+  .forex-label { font-size: 10px; }
+  .forex-price { font-size: 16px; }
+  .forex-change { font-size: 9px; }
+  .forex-state { font-size: 7px; }
+}
+@media (max-width: 767px) {
+  .forex-heading { font-size: 9px; letter-spacing: .7px; }
+  .forex-item { gap: 4px; }
+  .forex-label { font-size: 9px; }
+  .forex-price { font-size: 15px; }
+  .forex-change { font-size: 8px; }
+  .forex-state { font-size: 6px; }
+}
