@@ -225,14 +225,13 @@ function updateForexItem(item, pair, quote) {
   const closed = String(quote.marketState || "").toLowerCase() === "closed";
   const stale = quote.stale === true || Number(quote.quoteAgeSeconds) > 300;
   const percent = Number(quote.dayDiffPercent);
+  const movementKnown = !closed && !stale && quote.dayDiffPercent != null && quote.dayDiffPercent !== "" && Number.isFinite(percent);
+  item.classList.remove("forex-item--up", "forex-item--down", "forex-item--flat");
   change.classList.remove("forex-change--up", "forex-change--down", "forex-change--flat");
-  if (closed || stale || quote.dayDiffPercent == null || quote.dayDiffPercent === "" || !Number.isFinite(percent)) {
-    change.classList.add("forex-change--flat");
-    change.textContent = "—";
-  } else {
-    change.classList.add(percent > 0 ? "forex-change--up" : percent < 0 ? "forex-change--down" : "forex-change--flat");
-    change.textContent = `${percent > 0 ? "+" : ""}${percent.toFixed(2)}%`;
-  }
+  const direction = movementKnown && percent > 0 ? "up" : movementKnown && percent < 0 ? "down" : "flat";
+  item.classList.add(`forex-item--${direction}`);
+  change.classList.add(`forex-change--${direction}`);
+  change.textContent = movementKnown ? `${percent > 0 ? "+" : ""}${percent.toFixed(2)}%` : "—";
   state.classList.toggle("forex-state--stale", stale);
   state.textContent = closed ? "CLOSED" : stale ? "STALE" : "LIVE";
   item.title = `${pair.label} · ${closed ? "market closed — last quote" : stale ? "quote may be delayed" : "live quote"}${quote.timestamp ? " · " + quote.timestamp : ""}`;
