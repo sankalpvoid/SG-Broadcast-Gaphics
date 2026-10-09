@@ -72,6 +72,14 @@ body { font-family: Inter, system-ui, sans-serif; }
 }
 
 .brand-copy { min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 4px; }
+/* User-provided gold SG artwork */
+.brand-mark--image {
+  display: block;
+  object-fit: contain;
+  border: 0;
+  background: transparent;
+  image-rendering: auto;
+}
 .brand-name { color: var(--paper); font: 800 17px/1 'Barlow Condensed', sans-serif; letter-spacing: 1.15px; white-space: nowrap; }
 .brand-subtitle { color: var(--muted-dim); font: 600 8px/1 Inter, sans-serif; letter-spacing: 1.05px; white-space: nowrap; }
 
