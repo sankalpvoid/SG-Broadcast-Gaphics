@@ -5,28 +5,7 @@ const socials = [
   { platform: "whatsapp", handle: "@whatsapp_channel", icon: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a9.5 9.5 0 0 0-8.2 14.3L2.5 21.5l4.9-1.3A9.5 9.5 0 1 0 12 2.5Zm0 17a7.5 7.5 0 0 1-3.8-1l-.3-.2-2.9.8.8-2.8-.2-.3A7.5 7.5 0 1 1 12 19.5Zm4.1-5.6c-.2-.1-1.2-.6-1.4-.7-.2-.1-.3-.1-.5.1-.1.2-.5.7-.6.8-.1.2-.3.2-.5.1-1.5-.7-2.5-1.3-3.5-2.9-.3-.5.3-.4.8-1.3.1-.2.1-.3 0-.5l-.6-1.4c-.2-.4-.3-.4-.5-.4h-.4c-.2 0-.5.1-.7.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.3c.1.2 1.5 2.3 3.6 3.2 1.4.6 1.9.7 2.6.6.4-.1 1.2-.5 1.4-1 .2-.5.2-.9.1-1Z" fill="currentColor"/></svg>` }
 ];
 
-
-const track = document.getElementById("tickerTrack");
-const clock = document.getElementById("clock");
 const socialBar = document.getElementById("socialBar");
-const NEWS_REFRESH_MS = 60 * 60 * 1000; // ForexFactory export updates hourly and is rate-limited.
-const FOREX_REFRESH_MS = 15 * 1000;
-const FOREX_PAIRS = [
-  { symbol: "EURUSD", label: "Euro / US Dollar", digits: 5 },
-  { symbol: "GBPUSD", label: "British Pound / US Dollar", digits: 5 },
-  { symbol: "USDJPY", label: "US Dollar / Japanese Yen", digits: 3 },
-  { symbol: "AUDUSD", label: "Australian Dollar / US Dollar", digits: 5 },
-  { symbol: "USDCAD", label: "US Dollar / Canadian Dollar", digits: 5 },
-  { symbol: "USDCHF", label: "US Dollar / Swiss Franc", digits: 5 }
-];
-let newsEvents = [];
-let newsStatus = "LOADING USD ECONOMIC NEWS";
-let forexQuotes = new Map();
-let tickerPosition = 0;
-let lastFrame = performance.now();
-let refreshInFlight = false;
-let lastFetchAt = 0;
-const speed = 52;
 
 function buildSocialItem(social) {
   const item = document.createElement("span");
