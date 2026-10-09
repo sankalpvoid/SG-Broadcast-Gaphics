@@ -201,6 +201,13 @@ function renderTicker() {
     appendSeparator();
     track.appendChild(buildForexItem(pair));
   });
+
+  // Distinct section break at the loop boundary: FX quotes → USD news.
+  const sectionDivider = document.createElement("span");
+  sectionDivider.className = "section-divider";
+  sectionDivider.setAttribute("aria-hidden", "true");
+  track.appendChild(sectionDivider);
+
   track.insertAdjacentHTML("beforeend", track.innerHTML);
 }
 
