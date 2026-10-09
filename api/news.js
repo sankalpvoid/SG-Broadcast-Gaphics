@@ -14,6 +14,11 @@ function dayKeyInIndia(value) {
   return `${values.year}-${values.month}-${values.day}`;
 }
 
+function addDays(dayKey, amount) {
+  const [year, month, day] = dayKey.split("-").map(Number);
+  return new Date(Date.UTC(year, month - 1, day + amount)).toISOString().slice(0, 10);
+}
+
 export default async function handler(req, res) {
   res.setHeader("Cache-Control", "s-maxage=3600, stale-while-revalidate=3600");
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -28,9 +33,7 @@ export default async function handler(req, res) {
     if (!Array.isArray(events)) throw new Error("Unexpected calendar feed format");
 
     const today = dayKeyInIndia(new Date());
-    const tomorrowDate = new Date();
-    tomorrowDate.setDate(tomorrowDate.getDate() + 1);
-    const tomorrow = dayKeyInIndia(tomorrowDate);
+    const tomorrow = addDays(today, 1);
     const allUsdEvents = events
       .filter(event => String(event.currency || event.country || "").toUpperCase() === "USD")
       .filter(event => event.date)
@@ -44,14 +47,37 @@ export default async function handler(req, res) {
         forecast: event.forecast ?? "",
         previous: event.previous ?? ""
       }))
-      .filter(event => event.day === today || event.day === tomorrow)
+      .filter(event => event.day && event.day >= today)
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
-    const todayEvents = allUsdEvents.filter(event => event.day === today);
-    // Show every event today; if today's calendar has fewer than three, include tomorrow too.
-    const usdEvents = todayEvents.length >= 3
-      ? todayEvents
-      : allUsdEvents.filter(event => event.day === today || event.day === tomorrow);
+    const uniqueEvents = [];
+    const seen = new Set();
+    for (const event of allUsdEvents) {
+      const key = `${event.day}|${new Date(event.date).toISOString()}|${event.title.toLowerCase().trim()}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      uniqueEvents.push(event);
+    }
+
+    const todayEvents = uniqueEvents.filter(event => event.day === today);
+    let usdEvents;
+
+    if (todayEvents.length >= 3) {
+      // Three or more USD events today: show all today's events, and only today's events.
+      usdEvents = todayEvents;
+    } else {
+      // Fewer than three today: include all tomorrow's USD events, then later dates only if
+      // the combined list still has fewer than three distinct events.
+      usdEvents = uniqueEvents.filter(event => event.day === today || event.day === tomorrow);
+      const futureDays = [...new Set(uniqueEvents
+        .filter(event => event.day > tomorrow)
+        .map(event => event.day))].sort();
+
+      for (const day of futureDays) {
+        if (usdEvents.length >= 3) break;
+        usdEvents.push(...uniqueEvents.filter(event => event.day === day));
+      }
+    }
 
     res.status(200).json({
       source: "ForexFactory weekly calendar export",
