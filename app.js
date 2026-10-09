@@ -12,12 +12,12 @@ const socialBar = document.getElementById("socialBar");
 const NEWS_REFRESH_MS = 60 * 60 * 1000; // ForexFactory export updates hourly and is rate-limited.
 const FOREX_REFRESH_MS = 15 * 1000;
 const FOREX_PAIRS = [
-  { symbol: "EURUSD", label: "EUR/USD", digits: 5 },
-  { symbol: "GBPUSD", label: "GBP/USD", digits: 5 },
-  { symbol: "USDJPY", label: "USD/JPY", digits: 3 },
-  { symbol: "AUDUSD", label: "AUD/USD", digits: 5 },
-  { symbol: "USDCAD", label: "USD/CAD", digits: 5 },
-  { symbol: "USDCHF", label: "USD/CHF", digits: 5 }
+  { symbol: "EURUSD", label: "Euro / US Dollar", digits: 5 },
+  { symbol: "GBPUSD", label: "British Pound / US Dollar", digits: 5 },
+  { symbol: "USDJPY", label: "US Dollar / Japanese Yen", digits: 3 },
+  { symbol: "AUDUSD", label: "Australian Dollar / US Dollar", digits: 5 },
+  { symbol: "USDCAD", label: "US Dollar / Canadian Dollar", digits: 5 },
+  { symbol: "USDCHF", label: "US Dollar / Swiss Franc", digits: 5 }
 ];
 let newsEvents = [];
 let newsStatus = "LOADING USD ECONOMIC NEWS";
