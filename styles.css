@@ -72,12 +72,23 @@ body { font-family: Inter, system-ui, sans-serif; }
 }
 
 .brand-copy { min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 4px; }
-/* User-provided gold SG artwork */
-.brand-mark--image {
+/* User-provided gold SG artwork inside a single gold frame */
+.brand-mark-frame {
   display: block;
-  object-fit: contain;
-  border: 0;
-  background: transparent;
+  position: relative;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  overflow: hidden;
+  border: 1px solid var(--gold);
+  background: var(--bg-deep);
+}
+.brand-mark-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.1);
   image-rendering: auto;
 }
 .brand-name { color: var(--paper); font: 800 17px/1 'Barlow Condensed', sans-serif; letter-spacing: 1.15px; white-space: nowrap; }
