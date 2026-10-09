@@ -45,10 +45,12 @@ function buildSocialBar() {
   socialBar.innerHTML = "";
   socialBar.classList.add("social-bar--marquee");
 
+  const handlesState = document.createElement("div");
+  handlesState.className = "social-state social-state--handles";
   const marquee = document.createElement("div");
   marquee.className = "social-marquee";
 
-  // Two identical groups create a seamless, continuous loop.
+  // Two identical groups create a seamless, continuous loop on phones.
   for (let copy = 0; copy < 2; copy++) {
     const group = document.createElement("div");
     group.className = "social-marquee__group";
@@ -59,13 +61,80 @@ function buildSocialBar() {
         const separator = document.createElement("span");
         separator.className = "social-separator";
         separator.setAttribute("aria-hidden", "true");
-        group.appendChild(separator);
+      group.appendChild(separator);
       }
     });
     marquee.appendChild(group);
   }
+  handlesState.appendChild(marquee);
 
-  socialBar.appendChild(marquee);
+  const disclaimerState = document.createElement("div");
+  disclaimerState.className = "social-state social-state--disclaimer";
+  const disclaimerMarquee = document.createElement("div");
+  disclaimerMarquee.className = "disclaimer-marquee";
+  for (let copy = 0; copy < 2; copy++) {
+    const group = document.createElement("div");
+    group.className = "disclaimer-marquee__group";
+    group.setAttribute("aria-hidden", copy === 1 ? "true" : "false");
+    const disclaimer = document.createElement("span");
+    disclaimer.className = "disclaimer";
+    disclaimer.innerHTML = '<span class="disclaimer-label">DISCLAIMER</span>Trading involves risk. Not financial advice.';
+    group.appendChild(disclaimer);
+    disclaimerMarquee.appendChild(group);
+  }
+  disclaimerState.appendChild(disclaimerMarquee);
+  disclaimerState.setAttribute("aria-hidden", "true");
+  socialBar.append(handlesState, disclaimerState);
+
+  const mobile = window.matchMedia("(max-width: 767px)");
+  let cycleTimer;
+  let showingDisclaimer = false;
+  let desktopTimer;
+  const setState = (showDisclaimer) => {
+    showingDisclaimer = showDisclaimer;
+    socialBar.classList.toggle("social-bar--show-disclaimer", showDisclaimer);
+    handlesState.setAttribute("aria-hidden", String(showDisclaimer));
+    disclaimerState.setAttribute("aria-hidden", String(!showDisclaimer));
+  };
+
+  function startMobileCycle() {
+    clearTimeout(cycleTimer);
+    setState(false);
+    if (!mobile.matches) return;
+    const speedPxPerSecond = 40;
+    const group = marquee.querySelector(".social-marquee__group");
+    const socialDuration = Math.max(8000, (group?.getBoundingClientRect().width || 600) / speedPxPerSecond * 1000);
+    const disclaimerGroup = disclaimerMarquee.querySelector(".disclaimer-marquee__group");
+    const disclaimerDuration = Math.max(5000, (disclaimerGroup?.getBoundingClientRect().width || 350) / speedPxPerSecond * 1000);
+    marquee.style.animationDuration = `${socialDuration}ms`;
+    disclaimerMarquee.style.animationDuration = `${disclaimerDuration}ms`;
+    cycleTimer = setTimeout(() => {
+      setState(true);
+      cycleTimer = setTimeout(startMobileCycle, disclaimerDuration);
+    }, socialDuration);
+  }
+
+  function startDesktopCycle() {
+    clearTimeout(desktopTimer);
+    if (mobile.matches) return;
+    setState(false);
+    desktopTimer = setTimeout(() => {
+      setState(true);
+      desktopTimer = setTimeout(startDesktopCycle, 6500);
+    }, 9000);
+  }
+
+  const updateMode = () => {
+    clearTimeout(cycleTimer);
+    clearTimeout(desktopTimer);
+    socialBar.classList.toggle("social-bar--mobile", mobile.matches);
+    setState(false);
+    if (mobile.matches) startMobileCycle();
+    else startDesktopCycle();
+  };
+  mobile.addEventListener?.("change", updateMode);
+  window.addEventListener("resize", updateMode, { passive: true });
+  updateMode();
 }
 function todayInIndia() {
   return new Intl.DateTimeFormat("en-CA", {
