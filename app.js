@@ -106,10 +106,16 @@ function buildSocialBar() {
     const socialDuration = Math.max(8000, (group?.getBoundingClientRect().width || 600) / speedPxPerSecond * 1000);
     const disclaimerGroup = disclaimerMarquee.querySelector(".disclaimer-marquee__group");
     const disclaimerDuration = Math.max(5000, (disclaimerGroup?.getBoundingClientRect().width || 350) / speedPxPerSecond * 1000);
-    marquee.style.animationDuration = `${socialDuration}ms`;
-    disclaimerMarquee.style.animationDuration = `${disclaimerDuration}ms`;
+    const restartMarquee = (element, duration) => {
+      element.style.animation = "none";
+      element.style.transform = "translateX(0)";
+      void element.offsetWidth;
+      element.style.animation = `social-marquee-scroll ${duration}ms linear infinite`;
+    };
+    restartMarquee(marquee, socialDuration);
     cycleTimer = setTimeout(() => {
       setState(true);
+      restartMarquee(disclaimerMarquee, disclaimerDuration);
       cycleTimer = setTimeout(startMobileCycle, disclaimerDuration);
     }, socialDuration);
   }
