@@ -86,7 +86,9 @@ function buildEventItem(event) {
   time.textContent = formatEventTime(event.date);
   const impact = document.createElement("span");
   impact.className = `news-impact ${impactClass(event.impact)}`;
-  impact.textContent = String(event.impact || "NEWS").toUpperCase();
+  impact.setAttribute("role", "img");
+  impact.setAttribute("aria-label", `${String(event.impact || "Other").toLowerCase()} impact`);
+  impact.title = `${String(event.impact || "Other").toLowerCase()} impact`;
   const title = document.createElement("span");
   title.className = "news-title";
   title.textContent = event.title || "USD economic event";
