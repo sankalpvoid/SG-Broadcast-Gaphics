@@ -31,34 +31,29 @@ function buildSocialItem(social) {
 
 function buildSocialBar() {
   socialBar.innerHTML = "";
-  const handles = document.createElement("div");
-  handles.className = "social-state social-state--handles";
-  socials.forEach((social, index) => {
-    handles.appendChild(buildSocialItem(social));
-    if (index < socials.length - 1) {
-      const separator = document.createElement("span");
-      separator.className = "social-separator";
-      separator.setAttribute("aria-hidden", "true");
-      handles.appendChild(separator);
-    }
-  });
-  const disclaimer = document.createElement("div");
-  disclaimer.className = "social-state disclaimer";
-  disclaimer.textContent = "For educational purposes only. Not financial or investment advice. Do your own research before investing.";
-  socialBar.append(handles, disclaimer);
-  let showDisclaimer = false;
-  const setState = () => {
-    showDisclaimer = !showDisclaimer;
-    handles.style.opacity = showDisclaimer ? "0" : "1";
-    handles.style.transform = showDisclaimer ? "translateY(4px)" : "translateY(0)";
-    disclaimer.style.opacity = showDisclaimer ? "1" : "0";
-    disclaimer.style.transform = showDisclaimer ? "translateY(0)" : "translateY(-4px)";
-  };
-  handles.style.opacity = "1";
-  handles.style.transform = "translateY(0)";
-  disclaimer.style.opacity = "0";
-  disclaimer.style.transform = "translateY(-4px)";
-  setTimeout(() => setInterval(setState, 4000), 2500);
+  socialBar.classList.add("social-bar--marquee");
+
+  const marquee = document.createElement("div");
+  marquee.className = "social-marquee";
+
+  // Two identical groups create a seamless, continuous loop.
+  for (let copy = 0; copy < 2; copy++) {
+    const group = document.createElement("div");
+    group.className = "social-marquee__group";
+    group.setAttribute("aria-hidden", copy === 1 ? "true" : "false");
+    socials.forEach((social, index) => {
+      group.appendChild(buildSocialItem(social));
+      if (index < socials.length - 1) {
+        const separator = document.createElement("span");
+        separator.className = "social-separator";
+        separator.setAttribute("aria-hidden", "true");
+        group.appendChild(separator);
+      }
+    });
+    marquee.appendChild(group);
+  }
+
+  socialBar.appendChild(marquee);
 }
 
 function todayInIndia() {
