@@ -45,52 +45,27 @@ function buildSocialBar() {
   socialBar.innerHTML = "";
   socialBar.classList.add("social-bar--marquee");
 
-  const handlesState = document.createElement("div");
-  handlesState.className = "social-state social-state--handles is-visible";
-
   const marquee = document.createElement("div");
   marquee.className = "social-marquee";
 
-  // Two identical groups create a seamless, continuous loop on mobile.
+  // Two identical groups create a seamless, continuous loop.
   for (let copy = 0; copy < 2; copy++) {
     const group = document.createElement("div");
     group.className = "social-marquee__group";
     group.setAttribute("aria-hidden", copy === 1 ? "true" : "false");
     socials.forEach((social, index) => {
       group.appendChild(buildSocialItem(social));
-      const separator = document.createElement("span");
-      separator.className = "social-separator";
-      separator.setAttribute("aria-hidden", "true");
-      group.appendChild(separator);
+      if (index < socials.length - 1) {
+        const separator = document.createElement("span");
+        separator.className = "social-separator";
+        separator.setAttribute("aria-hidden", "true");
+        group.appendChild(separator);
+      }
     });
-
-    // Keep the disclaimer in the moving mobile loop, but not on desktop.
-    const disclaimer = document.createElement("span");
-    disclaimer.className = "disclaimer disclaimer--marquee";
-    disclaimer.innerHTML = '<span class="disclaimer-label">DISCLAIMER</span><span>Trading involves risk. Market data may be delayed. For information only—not investment advice.</span>';
-    group.appendChild(disclaimer);
     marquee.appendChild(group);
   }
 
-  handlesState.appendChild(marquee);
-
-  const disclaimerState = document.createElement("div");
-  disclaimerState.className = "social-state social-state--disclaimer";
-  disclaimerState.setAttribute("aria-label", "Trading disclaimer");
-  disclaimerState.innerHTML = '<span class="disclaimer"><span class="disclaimer-label">DISCLAIMER</span><span>Trading involves risk. Market data may be delayed. For information only—not investment advice.</span></span>';
-
-  socialBar.append(handlesState, disclaimerState);
-
-  // On desktop, alternate handles and disclaimer in the existing lower strip.
-  // This keeps the ticker dimensions and news/FX animation completely unchanged.
-  if (window.matchMedia("(min-width: 768px)").matches) {
-    let showingDisclaimer = false;
-    window.setInterval(() => {
-      showingDisclaimer = !showingDisclaimer;
-      handlesState.classList.toggle("is-visible", !showingDisclaimer);
-      disclaimerState.classList.toggle("is-visible", showingDisclaimer);
-    }, 10000);
-  }
+  socialBar.appendChild(marquee);
 }
 function todayInIndia() {
   return new Intl.DateTimeFormat("en-CA", {
