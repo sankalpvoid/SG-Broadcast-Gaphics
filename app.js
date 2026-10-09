@@ -57,7 +57,7 @@ function buildSocialBar() {
     group.setAttribute("aria-hidden", copy === 1 ? "true" : "false");
     const disclaimer = document.createElement("span");
     disclaimer.className = "disclaimer";
-    disclaimer.innerHTML = '<span class="disclaimer-label">DISCLAIMER</span>Educational purposes only. Not financial advice. Trading involves risk, including loss of capital. Past performance does not guarantee future results.';
+    disclaimer.innerHTML = '<span class="disclaimer-label">DISCLAIMER</span>Educational only. Not financial advice. Trading risks capital loss; past performance doesn't guarantee future results.';
     group.appendChild(disclaimer);
     disclaimerMarquee.appendChild(group);
   }
